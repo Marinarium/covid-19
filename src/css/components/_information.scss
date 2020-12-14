@@ -1,0 +1,36 @@
+.information {
+  min-width: 220px;
+  border-radius: 5px;
+}
+
+.information__header {
+  padding: 20px 10px;
+  border-bottom: 1px solid #252323;
+}
+
+.information__main-title {
+  font-size: 24px;
+  color: $accent;
+  margin-bottom: 15px;
+}
+
+.information__subtitle {
+  font-size: 14px;
+  line-height: 1.25;
+  letter-spacing: .03em;
+}
+
+.information__item {
+  border-bottom: 1px solid #252323;
+  padding: 20px 10px;
+}
+
+.information__title {
+  margin-bottom: 10px;
+}
+
+.information__numbers {
+  font-size: 20px;
+  letter-spacing: 0.03em;
+  text-transform: capitalize;
+}

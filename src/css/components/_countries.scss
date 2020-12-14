@@ -1,0 +1,44 @@
+.country {
+  border-radius: 5px;
+  min-width: 260px;
+}
+
+.country__header {
+  padding: 20px 10px;
+  border-bottom: 1px solid #252323;
+}
+
+.country__main-title {
+  font-size: 24px;
+  color: $accent;
+  margin-bottom: 10px;
+}
+
+.country__list {
+  box-sizing: border-box;
+  max-height: 450px;
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+}
+
+.country__item {
+  border-bottom: 1px solid #252323;
+  padding: 10px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.country__cases{
+  font-size: 18px;
+  letter-spacing: 0.03em;
+  margin-right: 5px;
+}
+
+.country__name {
+  display: inline-block;
+}
+
