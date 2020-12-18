@@ -35,14 +35,14 @@ const config = {
   devtool: setDevTool(),
   module: {
     rules: [{
-        test: /\.html$/,
-        use: [{
-          loader: 'html-loader',
-          options: {
-            minimize: false
-          }
-        }]
-      },
+      test: /\.html$/,
+      use: [{
+        loader: 'html-loader',
+        options: {
+          minimize: false
+        }
+      }]
+    },
       {
         test: /\.js$/,
         use: ['babel-loader'],
@@ -62,7 +62,7 @@ const config = {
             }
           }, {
             loader: 'postcss-loader',
-            options: { sourceMap: true, config: { path: './postcss.config.js' } }
+            options: {sourceMap: true, config: {path: './postcss.config.js'}}
           }
         ]
       },
@@ -78,7 +78,7 @@ const config = {
             }
           }, {
             loader: 'postcss-loader',
-            options: { sourceMap: true, config: { path: './postcss.config.js' } }
+            options: {sourceMap: true, config: {path: './postcss.config.js'}}
           }, {
             loader: 'sass-loader',
             options: {
@@ -95,11 +95,12 @@ const config = {
             options: {
               outputPath: 'img',
               name: '[name].[ext]'
-            }},
+            }
+          },
           {
             loader: 'image-webpack-loader',
             options: {
-              bypassOnDebug : true,
+              bypassOnDebug: true,
               mozjpeg: {
                 progressive: true,
                 quality: 75
@@ -164,6 +165,6 @@ if (isProd) {
   config.plugins.push(
     new UglifyJSPlugin(),
   );
-};
+}
 
 module.exports = config;

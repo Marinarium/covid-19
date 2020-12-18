@@ -5,29 +5,33 @@ showMenu();
 changeDeckOfCards();*/
 
 export default class View {
-    constructor(app) {
-        this.$app = app;
-    }
+  constructor(app) {
+    this.$app = app;
+  }
 
-    init() {
-        this.loaderShow();
+  init() {
+    this.loaderShow();
 
-        this.renderStatistics();
-        this.renderTable();
-        this.renderMap();
+    this.renderStatistics();
+    this.renderTable();
+    this.renderMap();
 
-        document.addEventListener(this.$app.config.events.loadCountries, this.loaderHide.bind(this));
-    }
+    document.addEventListener(this.$app.config.events.loadCountries, this.loaderHide.bind(this));
+  }
 
-    renderStatistics() {}
+  renderStatistics() {
+  }
 
-    renderTable() {}
+  renderTable() {
+  }
 
-    renderMap() {
-        addMap();
-    }
+  renderMap() {
+    addMap();
+  }
 
-    loaderShow() {}
+  loaderShow() {
+  }
 
-    loaderHide() {}
+  loaderHide() {
+  }
 }
