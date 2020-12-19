@@ -29,7 +29,7 @@ const config = {
   entry: {index: './src/js/index.js'},
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js'
+    filename: '[name].[contenthash].js'
   },
   mode: setDMode(),
   devtool: setDevTool(),
@@ -45,7 +45,7 @@ const config = {
     },
       {
         test: /\.js$/,
-        use: ['babel-loader'],
+        use: ['babel-loader', 'eslint-loader'],
         exclude: [
           /node_modules/
         ]
@@ -139,7 +139,7 @@ const config = {
 
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'style.css',
+      filename: 'style.[contenthash  ].css',
     }),
     new HtmlWebPackPlugin({
       template: './src/index.html',

@@ -15,5 +15,7 @@ module.exports = {
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "rules": {}
+  "rules": {
+    "class-methods-use-this": 1
+  }
 };
