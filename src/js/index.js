@@ -10,16 +10,10 @@ class App {
     this.config = Mixin.deepFreeze({
       url: {
         covid: {
-          base: 'https://covid19.mathdro.id/api',
-          confirmed: 'https://covid19.mathdro.id/api/confirmed',
-          recovered: 'https://covid19.mathdro.id/api/recovered',
-          deaths: 'https://covid19.mathdro.id/api/deaths',
-          countries: 'https://covid19.mathdro.id/api/countries',
-        },
-        countries: {
-          population: 'https://countriesnow.space/api/v0.1/countries/population',
+          summary: 'https://api.covid19api.com/summary',
         },
       },
+      apiCovidToken: '5cf9dfd5-3449-485e-b5ae-70a60e997864',
       events: {
         loadAll: 'load-all',
         loadCountries: 'load-countries',

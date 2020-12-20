@@ -13,7 +13,40 @@ const Mixin = {
     });
 
     return object;
-  }
+  },
+  deepClone(obj) {
+    const out = {};
+
+    Object.keys(obj).forEach((key) => {
+      const item = obj[key];
+
+      out[key] = (typeof item === 'object') ? Mixin.deepClone(item) : item;
+    });
+
+    return out;
+  },
+  getDatesForPreviousDate() {
+    const out = {
+      from: '',
+      to: '',
+    };
+
+    const date = new Date();
+
+    date.setDate(date.getDate() - 1);
+    date.setUTCMinutes(0);
+    date.setUTCHours(0);
+    date.setUTCSeconds(0);
+    date.setUTCMilliseconds(0);
+
+    out.from = date.toISOString();
+
+    date.setUTCSeconds(1);
+
+    out.to = date.toISOString();
+
+    return out;
+  },
 }
 
 export default Mixin;
