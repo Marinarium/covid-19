@@ -1,0 +1,33 @@
+.chart {
+  position: relative;
+  background-color: $main-bg;
+}
+
+.chart_full {
+  top: 0;
+  left: 0;
+  position: absolute;
+  z-index: 100000;
+  width: calc(100vw - 40px);
+  height: 100%;
+
+  .chart__title {
+    text-align: left;
+    padding-left: 15px;
+  }
+}
+
+.chart__box {
+  height: 180px;
+  max-width: 500px;
+  border-bottom: 1px solid #252323;
+  border-left: 1px solid #252323;
+  margin-bottom: 20px;
+}
+
+.chart__title {
+  font-size: 16px;
+  color: #ff8906;
+  margin-bottom: 20px;
+  text-align: center;
+}

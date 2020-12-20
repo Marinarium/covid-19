@@ -4,6 +4,10 @@
   border-bottom: 1px solid $paragraph;
 }
 
+.country_full .search {
+  max-width: 370px;
+}
+
 .search__input,
 .search__button {
   border: none;

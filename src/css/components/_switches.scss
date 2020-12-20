@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-between;
   padding: 20px 0;
+  margin-bottom: 20px;
 }
 
 .switch {
@@ -10,6 +11,7 @@
   text-align: center;
   cursor: pointer;
   transition-duration: 300ms;
+  font-size: 14px;
 
   &:after {
     content: "";

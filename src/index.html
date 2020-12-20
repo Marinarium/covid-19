@@ -19,39 +19,48 @@
     </header>
     <main class="main">
         <div class="information">
-            <div class="information__header">
-                <h2 class="information__main-title">Statistic</h2>
-                <p class="information__subtitle">Last Updated: <span class="information__last-update">12/13/2020</span></p>
+            <div class="statistic">
+                <div class="show-fullscreen show-fullscreen_statistic"></div>
+                <div class="information__header">
+                    <h2 class="information__main-title">Statistic</h2>
+                    <p class="information__subtitle">Last Updated: <span class="information__last-update">12/13/2020</span></p>
+                </div>
+                <ul class="information__list">
+                    <li class="information__item">
+                        <h2 class="information__title">Cases in</h2>
+                        <p class="information__numbers">the world</p>
+                    </li>
+                    <li class="information__item">
+                        <h2 class="information__title">All cases</h2>
+                        <p class="information__numbers">161 135 597</p>
+                    </li>
+                    <li class="information__item">
+                        <h2 class="information__title">Deaths</h2>
+                        <p class="information__numbers">1 609 413</p>
+                    </li>
+                    <li class="information__item">
+                        <h2 class="information__title">Recovered</h2>
+                        <p class="information__numbers">42 022 409</p>
+                    </li>
+                    <li class="information__item">
+                        <h2 class="information__title">Last updated</h2>
+                        <p class="information__numbers">12/13/2020</p>
+                    </li>
+                </ul>
+                <div class="switches">
+                    <div class="switch">all time</div>
+                    <div class="switch">all cases</div>
+                </div>
             </div>
-            <ul class="information__list">
-                <li class="information__item">
-                    <h2 class="information__title">Cases in</h2>
-                    <p class="information__numbers">the world</p>
-                </li>
-                <li class="information__item">
-                    <h2 class="information__title">All cases</h2>
-                    <p class="information__numbers">161 135 597</p>
-                </li>
-                <li class="information__item">
-                    <h2 class="information__title">Deaths</h2>
-                    <p class="information__numbers">1 609 413</p>
-                </li>
-                <li class="information__item">
-                    <h2 class="information__title">Recovered</h2>
-                    <p class="information__numbers">42 022 409</p>
-                </li>
-                <li class="information__item">
-                    <h2 class="information__title">Last updated</h2>
-                    <p class="information__numbers">12/13/2020</p>
-                </li>
-            </ul>
-            <div class="switches">
-                <div class="switch">all time</div>
-                <div class="switch">all cases</div>
+            <div class="chart">
+                <div class="show-fullscreen"></div>
+                <div class="chart__box"></div>
+                <h3 class="chart__title">Chart</h3>
             </div>
         </div>
         <div class="map" id="map"></div>
         <div class="country">
+            <div class="show-fullscreen"></div>
             <div class="country__header">
                 <h2 class="country__main-title">Countries</h2>
                 <form action="/" method="post" class="search">
@@ -162,7 +171,6 @@
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 <script src="https://cdn.maptiler.com/mapbox-gl-js/v0.53.0/mapbox-gl.js"></script>
 <script src="https://cdn.maptiler.com/mapbox-gl-leaflet/latest/leaflet-mapbox-gl.js"></script>
-
 </body>
 
 </html>
