@@ -139,7 +139,7 @@ const config = {
 
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'style.[contenthash  ].css',
+      filename: 'style.[contenthash].css',
     }),
     new HtmlWebPackPlugin({
       template: './src/index.html',
