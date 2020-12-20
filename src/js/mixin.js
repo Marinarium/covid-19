@@ -47,6 +47,11 @@ const Mixin = {
 
     return out;
   },
+  calcPercent(current, max) {
+    if (!max) return 0;
+
+    return +((current / max) * 100).toFixed(2);
+  }
 }
 
 export default Mixin;

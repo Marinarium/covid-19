@@ -12,12 +12,13 @@ class App {
         covid: {
           summary: 'https://api.covid19api.com/summary',
         },
+        flag: 'https://www.countryflags.io/<ISO>/flat/64.png',
       },
       apiCovidToken: '5cf9dfd5-3449-485e-b5ae-70a60e997864',
       events: {
         loadAll: 'load-all',
+        loadWorld: 'load-world',
         loadCountries: 'load-countries',
-        loadCovid: 'load-covid',
         loadMap: 'load-map',
       },
     });
