@@ -1,8 +1,8 @@
-import {addMap} from '../open-street-map.js';
-/*import {showMenu} from './showMenu';
+import map from '../open-street-map';
+/* import {showMenu} from './showMenu';
 import {changeDeckOfCards} from './changeDeckOfCards.js';
 showMenu();
-changeDeckOfCards();*/
+changeDeckOfCards(); */
 
 //require '../showBlockOnFullscreen.js'
 //import libs from '../showBlockOnFullscreen';
@@ -37,7 +37,7 @@ export default class View {
   }
 
   renderMap() {
-    addMap();
+    map.addMap();
   }
 
   loaderShow() {

@@ -1,9 +1,9 @@
-export const Mixin = {
+const Mixin = {
   deepFreeze(object) {
     Object.freeze(object);
 
     Object.getOwnPropertyNames(object).forEach(function (prop) {
-      if (object.hasOwnProperty(prop)
+      if (Object.prototype.hasOwnProperty.call(object, prop)
         && object[prop] !== null
         && (typeof object[prop] === "object" || typeof object[prop] === "function")
         && !Object.isFrozen(object[prop])
@@ -15,3 +15,5 @@ export const Mixin = {
     return object;
   }
 }
+
+export default Mixin;

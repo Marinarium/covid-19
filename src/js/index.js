@@ -3,7 +3,7 @@ import '../css/style.scss';
 import HttpClient from './components/HttpClient';
 import Storage from './components/Storage';
 import View from './components/View';
-import {Mixin} from './mixin';
+import Mixin from './mixin';
 
 class App {
   constructor() {
