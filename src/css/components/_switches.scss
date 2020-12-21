@@ -3,15 +3,25 @@
   justify-content: space-between;
   padding: 20px 0;
   margin-bottom: 20px;
+  max-width: 370px;
 }
 
-.switch {
+.switches__item {
+  position: relative;
+  z-index: 1;
+}
+
+.switches__btn {
   box-sizing: border-box;
   min-width: 50%;
   text-align: center;
   cursor: pointer;
   transition-duration: 300ms;
   font-size: 14px;
+  background-color: transparent;
+  border: none;
+  color: $paragraph;
+  padding: 10px 20px;
 
   &:after {
     content: "";
@@ -24,12 +34,49 @@
     transition-duration: 300ms;
     transition-timing-function: cubic-bezier(0.34, 0.66, 0.61, 0.76);
   }
+}
+
+.switches__item:hover .switches__btn {
+  color: $accent;
+}
+
+.switches__item:hover .switches__btn:after {
+  border-color: $accent transparent;
+}
+
+.switches__list {
+  background-color: $paragraph;
+  color: $main-bg;
+  position: absolute;
+}
+
+.switches__option {
+  box-sizing: border-box;
+  cursor: pointer;
+  transition-duration: 300ms;
+  white-space: nowrap;
+  text-align: center;
+  padding: 0;
+  height: 0;
+  opacity: 1;
+  font-size: 0;
+  color: $main-bg;
+  min-width: 105px;
+  border-bottom: none;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   &:hover {
-    color: $accent;
+    background-color: $accent;
+    text-shadow:0px 0px 1px $main-bg;
   }
 }
 
-.switch:hover.switch:after {
-  border-color: $accent transparent;
+.switches__item:hover .switches__option {
+  font-size: 12px;
+  padding: 10px 20px;
+  height: auto;
+  border-bottom: 1px solid $border;
 }

@@ -1,18 +1,17 @@
 import map from '../open-street-map';
-/* import {showMenu} from './showMenu';
-import {changeDeckOfCards} from './changeDeckOfCards.js';
-showMenu();
-changeDeckOfCards(); */
-
-//require '../showBlockOnFullscreen.js'
-//import libs from '../showBlockOnFullscreen';
 
 export default class View {
-  constructor(app) {
+  constructor(app, storage) {
     this.$app = app;
+    this.$storage = storage;
     this.elements = {
-      statistics: document.querySelector('.statistic'),
-      statisticsButton: document.querySelector('.show-fullscreen_statistic'),
+      mainContent: document.querySelector('.main'),
+      statisticBlock: document.querySelector('.statistic'),
+      statisticResizeButton: document.querySelector('.resize-button_statistic'),
+      chartBlock: document.querySelector('.chart'),
+      chartResizeButton: document.querySelector('.resize-button_chart'),
+      countryBlock: document.querySelector('.country'),
+      countryResizeButton: document.querySelector('.resize-button_country'),
     };
     console.log(this);
   }
@@ -27,6 +26,7 @@ export default class View {
 
     document.addEventListener(this.$app.config.events.loadCountries, () => {
       this.loaderHide.bind(this);
+      console.log(this.$storage.getAllCountries());
     });
   }
 
@@ -47,6 +47,19 @@ export default class View {
   }
 
   addListenersOnFullScreen() {
-    this.elements.statisticsButton.addEventListener('click', () => console.log('click'));
+    this.elements.mainContent.addEventListener('click', () => {
+      if (event.target == this.elements.statisticResizeButton) {
+        this.elements.statisticBlock.classList.toggle('statistic_full');
+        this.elements.statisticResizeButton.classList.toggle('resize-button_minimize');
+      }
+      if(event.target == this.elements.chartResizeButton) {
+        this.elements.chartBlock.classList.toggle('chart_full');
+        this.elements.chartResizeButton.classList.toggle('resize-button_minimize');
+      }
+      if(event.target == this.elements.countryResizeButton) {
+        this.elements.countryBlock.classList.toggle('country_full');
+        this.elements.countryResizeButton.classList.toggle('resize-button_minimize');
+      }
+    });
   }
 }

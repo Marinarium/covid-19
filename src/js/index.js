@@ -20,12 +20,13 @@ class App {
         loadWorld: 'load-world',
         loadCountries: 'load-countries',
         loadMap: 'load-map',
+        selectCountry: 'select-country',
       },
     });
 
     this.client = new HttpClient(this);
     this.storage = new Storage(this, this.client);
-    this.view = new View(this);
+    this.view = new View(this, this.storage);
   }
 
   init() {
