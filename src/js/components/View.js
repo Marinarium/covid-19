@@ -47,16 +47,16 @@ export default class View {
   }
 
   addListenersOnFullScreen() {
-    this.elements.mainContent.addEventListener('click', () => {
-      if (event.target == this.elements.statisticResizeButton) {
+    this.elements.mainContent.addEventListener('click', (event) => {
+      if (event.target === this.elements.statisticResizeButton) {
         this.elements.statisticBlock.classList.toggle('statistic_full');
         this.elements.statisticResizeButton.classList.toggle('resize-button_minimize');
       }
-      if(event.target == this.elements.chartResizeButton) {
+      if(event.target === this.elements.chartResizeButton) {
         this.elements.chartBlock.classList.toggle('chart_full');
         this.elements.chartResizeButton.classList.toggle('resize-button_minimize');
       }
-      if(event.target == this.elements.countryResizeButton) {
+      if(event.target === this.elements.countryResizeButton) {
         this.elements.countryBlock.classList.toggle('country_full');
         this.elements.countryResizeButton.classList.toggle('resize-button_minimize');
       }
