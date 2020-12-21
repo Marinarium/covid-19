@@ -23,6 +23,10 @@
   border-bottom: 1px solid #252323;
   border-left: 1px solid #252323;
   margin-bottom: 20px;
+
+  .chart_full & {
+    max-width: unset;
+  }
 }
 
 .chart__title {
