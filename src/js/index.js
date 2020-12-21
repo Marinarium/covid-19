@@ -10,27 +10,23 @@ class App {
     this.config = Mixin.deepFreeze({
       url: {
         covid: {
-          base: 'https://covid19.mathdro.id/api',
-          confirmed: 'https://covid19.mathdro.id/api/confirmed',
-          recovered: 'https://covid19.mathdro.id/api/recovered',
-          deaths: 'https://covid19.mathdro.id/api/deaths',
-          countries: 'https://covid19.mathdro.id/api/countries',
+          summary: 'https://api.covid19api.com/summary',
         },
-        countries: {
-          population: 'https://countriesnow.space/api/v0.1/countries/population',
-        },
+        flag: 'https://www.countryflags.io/<ISO>/flat/64.png',
       },
+      apiCovidToken: '5cf9dfd5-3449-485e-b5ae-70a60e997864',
       events: {
         loadAll: 'load-all',
+        loadWorld: 'load-world',
         loadCountries: 'load-countries',
-        loadCovid: 'load-covid',
         loadMap: 'load-map',
+        selectCountry: 'select-country',
       },
     });
 
     this.client = new HttpClient(this);
     this.storage = new Storage(this, this.client);
-    this.view = new View(this);
+    this.view = new View(this, this.storage);
   }
 
   init() {
@@ -42,3 +38,4 @@ class App {
 const app = new App();
 
 app.init();
+

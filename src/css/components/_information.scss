@@ -1,6 +1,20 @@
 .information {
   min-width: 220px;
   border-radius: 5px;
+  position: relative;
+}
+
+.statistic {
+  background-color: $main-bg;
+}
+
+.statistic_full {
+  top: 0;
+  left: 0;
+  position: absolute;
+  z-index: 100000;
+  width: calc(100vw - 40px);
+  height: 100%;
 }
 
 .information__header {
@@ -11,7 +25,7 @@
 .information__main-title {
   font-size: 24px;
   color: $accent;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .information__subtitle {
@@ -22,15 +36,16 @@
 
 .information__item {
   border-bottom: 1px solid #252323;
-  padding: 20px 10px;
+  padding: 10px;
 }
 
 .information__title {
   margin-bottom: 10px;
+  font-size: 14px;
 }
 
 .information__numbers {
-  font-size: 20px;
+  font-size: 16px;
   letter-spacing: 0.03em;
   text-transform: capitalize;
 }
