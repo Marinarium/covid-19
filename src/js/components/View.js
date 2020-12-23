@@ -12,28 +12,55 @@ export default class View {
       chartResizeButton: document.querySelector('.resize-button_chart'),
       countryBlock: document.querySelector('.country'),
       countryResizeButton: document.querySelector('.resize-button_country'),
+      countryList: document.querySelector('.country__list'),
     };
     console.log(this);
   }
 
   init() {
     this.loaderShow();
-
     this.renderStatistics();
-    this.renderTable();
     this.renderMap();
     this.addListenersOnFullScreen();
 
-    document.addEventListener(this.$app.config.events.loadCountries, () => {
-      this.loaderHide.bind(this);
-      console.log(this.$storage.getAllCountries());
-    });
+      document.addEventListener(this.$app.config.events.loadCountries, () => {
+          this.loaderHide.bind(this);
+          this.renderTable();
+      });
   }
 
   renderStatistics() {
   }
 
   renderTable() {
+      const arrayOfNumbersAndNamesInCountry = [];
+      for (let i = 0; i < this.$storage.getAllCountries().length; i++) {
+          arrayOfNumbersAndNamesInCountry.push({
+              name: this.$storage.getAllCountries()[i].name,
+              totalCases: this.$storage.getAllCountries()[i].total.cases,
+          })
+      }
+
+      function sortByNumbersOfCases(arr) {
+          arr.sort((a, b) => a.totalCases < b.totalCases ? 1 : -1);
+      }
+      sortByNumbersOfCases(arrayOfNumbersAndNamesInCountry);
+
+      for (let j = 0; j < arrayOfNumbersAndNamesInCountry.length; j++) {
+          const listItem = document.createElement('li');
+          listItem.className = "country__item";
+          this.elements.countryList.append(listItem);
+
+          const numberOfCasesInCountry = document.createElement('span');
+          numberOfCasesInCountry.className = "country__cases";
+          listItem.append(numberOfCasesInCountry);
+          numberOfCasesInCountry.innerText = arrayOfNumbersAndNamesInCountry[j].totalCases;
+
+          const nameOfCountry = document.createElement('h2');
+          nameOfCountry.className = "country__name";
+          listItem.append(nameOfCountry);
+          nameOfCountry.innerText = arrayOfNumbersAndNamesInCountry[j].name;
+      }
   }
 
   renderMap() {
