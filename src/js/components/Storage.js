@@ -19,6 +19,16 @@ export default class Storage {
           recovered: 0,
           deaths: 0,
         },
+        perOneHundredThousandWorldTotal: {
+          cases: 0,
+          recovered: 0,
+          deaths: 0,
+        },
+        perOneHundredThousandWorldLastDay: {
+          cases: 0,
+          recovered: 0,
+          deaths: 0,
+        },
       },
       countries: [],
     };
@@ -95,6 +105,13 @@ export default class Storage {
     this.collection.world.lastDay.recovered = global.NewRecovered;
     this.collection.world.lastDay.deaths = global.NewDeaths;
 
+    this.collection.world.perOneHundredThousandWorldTotal.cases =  this.calculateByOneThousand(global.TotalConfirmed, 7594000000);
+    this.collection.world.perOneHundredThousandWorldTotal.recovered =  this.calculateByOneThousand(global.TotalRecovered, 7594000000);
+    this.collection.world.perOneHundredThousandWorldTotal.deaths =  this.calculateByOneThousand(global.TotalDeaths, 7594000000);
+
+    this.collection.world.perOneHundredThousandWorldLastDay.cases =  this.calculateByOneThousand(global.NewConfirmed, 7594000000);
+    this.collection.world.perOneHundredThousandWorldLastDay.recovered =  this.calculateByOneThousand(global.NewRecovered, 7594000000);
+    this.collection.world.perOneHundredThousandWorldLastDay.deaths =  this.calculateByOneThousand(global.NewDeaths, 7594000000);
     document.dispatchEvent(new Event(this.$app.config.events.loadWorld));
   }
 

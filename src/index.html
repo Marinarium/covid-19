@@ -24,43 +24,39 @@
                 <div class="information__header">
                     <h2 class="information__main-title">Statistic</h2>
                     <p class="information__subtitle">Last Updated: <span
-                            class="information__last-update">12/13/2020</span></p>
+                            class="information__last-update">12/25/2020</span></p>
                 </div>
                 <ul class="information__list">
                     <li class="information__item">
                         <h2 class="information__title">Cases in</h2>
-                        <p class="information__numbers">the world</p>
+                        <p class="information__numbers information__numbers_location">...</p>
                     </li>
                     <li class="information__item">
                         <h2 class="information__title">All cases</h2>
-                        <p class="information__numbers">161 135 597</p>
+                        <p class="information__numbers information__numbers_all">...</p>
                     </li>
                     <li class="information__item">
                         <h2 class="information__title">Deaths</h2>
-                        <p class="information__numbers">1 609 413</p>
+                        <p class="information__numbers information__numbers_deaths">...</p>
                     </li>
                     <li class="information__item">
                         <h2 class="information__title">Recovered</h2>
-                        <p class="information__numbers">42 022 409</p>
-                    </li>
-                    <li class="information__item">
-                        <h2 class="information__title">Last updated</h2>
-                        <p class="information__numbers">12/13/2020</p>
+                        <p class="information__numbers information__numbers_recovered">...</p>
                     </li>
                 </ul>
                 <div class="switches">
-                    <div class="switches__item">
-                        <button class="switches__btn" type="button">all time</button>
+                    <div class="switches__item switches__item_time">
+                        <button class="switches__btn switches__btn_time" type="button">all time</button>
                         <ul class="switches__list">
-                            <li class="switches__option">all time</li>
-                            <li class="switches__option">the last day</li>
+                            <li class="switches__option" data-param="all-time">all time</li>
+                            <li class="switches__option" data-param="last-day">last day</li>
                         </ul>
                     </div>
-                    <div class="switches__item">
-                        <button class="switches__btn" type="button">all cases</button>
+                    <div class="switches__item switches__item_cases">
+                        <button class="switches__btn switches__btn_cases" type="button">all cases</button>
                         <ul class="switches__list">
-                            <li class="switches__option">all cases</li>
-                            <li class="switches__option">daily cases</li>
+                            <li class="switches__option" data-param="all-cases">all cases</li>
+                            <li class="switches__option" data-param="per-cases">per 100 000</li>
                         </ul>
                     </div>
                 </div>
@@ -89,78 +85,6 @@
                 </form>
             </div>
             <ul class="country__list">
-<!--                <li class="country__item">
-                    <span class="country__cases">16 135 597</span>
-                    <h2 class="country__name">US</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">9 857 029</span>
-                    <h2 class="country__name">India</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">6 880 127</span>
-                    <h2 class="country__name">Brazil</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">2 629 699</span>
-                    <h2 class="country__name">Russia</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">2 419 079</span>
-                    <h2 class="country__name">France</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 854 490</span>
-                    <h2 class="country__name">United Kingdom</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 843 712</span>
-                    <h2 class="country__name">Italy</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 809 809</span>
-                    <h2 class="country__name">Turkey</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 730 575</span>
-                    <h2 class="country__name">Spain</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 494 602</span>
-                    <h2 class="country__name">Argentina</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 417 072</span>
-                    <h2 class="country__name">Colombia</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 337 841</span>
-                    <h2 class="country__name">Germany</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 241 436</span>
-                    <h2 class="country__name">Mexico</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 135 676</span>
-                    <h2 class="country__name">Poland</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 108 269</span>
-                    <h2 class="country__name">Iran</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">980 943</span>
-                    <h2 class="country__name">Peru</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">918 444</span>
-                    <h2 class="country__name">Ukraine</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">852 965</span>
-                    <h2 class="country__name">South Africa</h2>
-                </li>-->
             </ul>
         </div>
     </main>
