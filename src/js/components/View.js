@@ -12,6 +12,7 @@ export default class View {
       chartBlock: document.querySelector('.chart'),
       chartResizeButton: document.querySelector('.resize-button_chart'),
       chartGraph: document.querySelector('.chart__box'),
+      chartLoaderProgress: document.querySelector('.chart__loader-progress'),
       countryBlock: document.querySelector('.country'),
       countryResizeButton: document.querySelector('.resize-button_country'),
     };
@@ -41,6 +42,13 @@ export default class View {
   }
 
   renderChart() {
+    this.elements.chartBlock.classList.add('loading');
+    document.addEventListener(this.$app.config.events.countryDataLoaded, (e) => {
+      this.elements.chartLoaderProgress.innerHTML = `Left: ${e.detail.left.toString().bold()} countries`;
+
+      if (!e.detail.left) this.elements.chartBlock.classList.remove('loading');
+    });
+
     const date = new Date();
     date.setMonth(11);
     date.setYear(2019);

@@ -1,6 +1,65 @@
+@keyframes flick {
+  0% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
 .chart {
   position: relative;
   background-color: $main-bg;
+
+  $chart: &;
+
+  &.loading {
+    user-select: none;
+    cursor: default;
+  }
+
+  &__loader {
+    #{$chart}.loading & {
+      visibility: visible;
+      opacity: 1;
+      z-index: 0;
+    }
+
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background-color: $chartLoaderBackground;
+    justify-content: center;
+    align-items: center;
+    transition: all .5s;
+    visibility: hidden;
+    opacity: 0;
+    z-index: -1;
+
+    &-title {
+      font-size: 2rem;
+      margin-bottom: .5rem;
+      animation: flick 1.5s 0s infinite;
+    }
+
+    &-description {
+      text-align: center;
+      margin-bottom: .5rem;
+    }
+
+    &-progress {
+      font-size: .85rem;
+
+      b {
+        font-weight: bold;
+      }
+    }
+  }
 }
 
 .chart_full {
@@ -20,8 +79,8 @@
 .chart__box {
   height: 180px;
   max-width: 500px;
-  border-bottom: 1px solid #252323;
-  border-left: 1px solid #252323;
+  //border-bottom: 1px solid #252323;
+  //border-left: 1px solid #252323;
   margin-bottom: 20px;
 
   .chart_full & {
