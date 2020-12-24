@@ -16,6 +16,9 @@ module.exports = {
     "sourceType": "module"
   },
   "rules": {
-    "class-methods-use-this": 1
+    "class-methods-use-this": 1,
+    "no-param-reassign": 1,
+    "no-underscore-dangle": 1,
+    "no-debugger": 1,
   }
 };

@@ -63,8 +63,13 @@
             </div>
             <div class="chart">
                 <div class="resize-button resize-button_chart"></div>
-                <div class="chart__box"></div>
+                <canvas class="chart__box"></canvas>
                 <h3 class="chart__title">Chart</h3>
+                <div class="chart__loader">
+                  <span class="chart__loader-title">Loading...</span>
+                  <span class="chart__loader-description">Please, take a while, loading data can be about 2 min</span>
+                  <span class="chart__loader-progress">Computing</span>
+                </div>
             </div>
         </div>
         <div class="map" id="map"></div>
