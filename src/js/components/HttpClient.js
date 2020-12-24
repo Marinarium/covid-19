@@ -10,23 +10,15 @@ export default class HttpClient {
   }
 
   getDataAsync(url, params, cb, responseType) {
-    fetch(url, params)
+    return  fetch(url, params)
       .then((response) => response[responseType]())
-      .then((response) => cb(response))
-      .catch((error) => {
-        throw new Error(error.message);
-      });
-
-    return true;
+      .then((response) => cb(response));
   }
 
   async getDataSync(url, params, responseType) {
     const response = await fetch(url, params);
+    const decoded = await response[responseType]();
 
-    try {
-      return await response[responseType]();
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    return decoded;
   }
 }

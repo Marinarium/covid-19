@@ -19,7 +19,7 @@
 }
 
 .statistic:hover .resize-button,
-.chart:hover .resize-button,
+.chart:hover:not(.loading) .resize-button,
 .country:hover .resize-button {
   opacity: 1;
 }
