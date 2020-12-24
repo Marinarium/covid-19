@@ -170,14 +170,14 @@ export default class Storage {
       countBad: 0,
     };
     let timeout = this.$app.config.timeouts.dailyLoad;
-    // let count = 0;
+    let count = 0;
 
     this.collection.countries.forEach((country) => {
       timeout += this.$app.config.timeouts.dailyLoad;
       loadingInfo.queue.push(country.slug);
 
-      // count += 1;
-      // if (count > 3) return;
+      count += 1;
+      if (count > 15) return;
 
       setTimeout(this.getCountryDailyData.bind(this, country, loadingInfo), timeout);
     });

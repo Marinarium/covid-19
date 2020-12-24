@@ -39,7 +39,7 @@ export default class View {
 
   renderTable() {
       const arrayOfNumbersAndNamesInCountry = [];
-      for (let i = 0; i < this.$storage.getAllCountries().length; i++) {
+      for (let i = 0; i < this.$storage.getAllCountries().length; i += 1) {
           arrayOfNumbersAndNamesInCountry.push({
               name: this.$storage.getAllCountries()[i].name,
               totalCases: this.$storage.getAllCountries()[i].total.cases,
@@ -51,7 +51,7 @@ export default class View {
       }
       sortByNumbersOfCases(arrayOfNumbersAndNamesInCountry);
 
-      for (let j = 0; j < arrayOfNumbersAndNamesInCountry.length; j++) {
+      for (let j = 0; j < arrayOfNumbersAndNamesInCountry.length; j += 1) {
           const listItem = document.createElement('li');
           listItem.className = "country__item";
           this.elements.countryList.append(listItem);
