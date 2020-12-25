@@ -10,23 +10,19 @@ class App {
     this.config = Mixin.deepFreeze({
       url: {
         covid: {
-          summary: 'https://api.covid19api.com/summary',
-          countryDayOne: 'https://api.covid19api.com/dayone/country',
+          summary: 'https://disease.sh/v3/covid-19/historical/all?lastdays=all',
+          historical: 'https://disease.sh/v3/covid-19/historical/<PATH>?lastdays=all',
         },
-        flag: 'https://www.countryflags.io/<ISO>/flat/64.png',
+        countries: 'https://restcountries.eu/rest/v2/all?fields=name;flag;population;alpha2Code;latlng',
       },
-      apiCovidToken: '5cf9dfd5-3449-485e-b5ae-70a60e997864',
       events: {
-        loadWorld: 'load-world',
+        loadAll: 'load-all',
         loadCountries: 'load-countries',
         loadDaily: 'load-daily',
         loadMap: 'load-map',
         countryDataLoaded: 'country-data-loaded',
         worldDailyCalculated: 'world-daily-calculated',
         selectCountry: 'select-country',
-      },
-      timeouts: {
-        dailyLoad: 550,
       },
     });
 
@@ -38,10 +34,8 @@ class App {
   init() {
     if (window.location.hostname !== 'localhost') alert('По возможности проверьте в последний день дедлайна :)');
 
-    document.addEventListener(this.config.events.loadWorld, () => console.log('loadWorld'));
+    document.addEventListener(this.config.events.loadAll, () => console.log('loadWorld', this));
     document.addEventListener(this.config.events.loadCountries, () => console.log('loadCountries'));
-    document.addEventListener(this.config.events.loadDaily, () => console.log('loadDaily'));
-    document.addEventListener(this.config.events.worldDailyCalculated, () => console.log('worldDailyCalculated'));
 
     this.view.init();
     this.storage.load();
