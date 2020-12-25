@@ -196,22 +196,44 @@ export default class Storage {
 
   getCountriesInfoAllTime(countriesIso) {
     const cb = (data) => {
-      data.forEach((info, index) => {
-        if (!info) return;
+      const loadingInfo = {
+        overall: data.length,
+        current: 0,
+      };
 
-        this.collection.countries[index].nameInApi = info.country;
+      const nextStep = () => {
+        loadingInfo.current += 1;
 
-        this.writeCountryDailyData(info);
-      });
+        if (loadingInfo.current > loadingInfo.overall) return;
 
-      document.dispatchEvent(new Event(this.$app.config.events.loadCountries));
-      this.getWorldDaily();
+        document.dispatchEvent(new CustomEvent(this.$app.config.events.loadProgress, {detail: loadingInfo}));
+
+        setTimeout(() => {
+          this.writeCountryDailyData(data[loadingInfo.current], loadingInfo.current, nextStep);
+        });
+      };
+
+      this.writeCountryDailyData(data[loadingInfo.current], loadingInfo.current, nextStep);
+
+      document.addEventListener(this.$app.config.events.loadProgress, (e) => {
+        if (e.detail.current === e.detail.overall) {
+          document.dispatchEvent(new Event(this.$app.config.events.loadCountries));
+          this.getWorldDaily();
+        }
+      })
     }
 
     this.$client.getData(this.$app.config.url.covid.historical.replace('<PATH>', countriesIso), {}, cb);
   }
 
-  writeCountryDailyData(info) {
+  writeCountryDailyData(info, index, cb) {
+    if (!info) {
+      cb();
+
+      return;
+    }
+
+    this.collection.countries[index].nameInApi = info.country;
     const countryData = this.collection.countries.find((item) => item.nameInApi === info.country);
     let previousIndex = 0;
 
@@ -270,6 +292,8 @@ export default class Storage {
       countryData.perOneHundredThousandLastDay.recovered = this.calculateByOneThousand(countryData.lastDay.recovered, countryData.population);
       countryData.perOneHundredThousandLastDay.deaths = this.calculateByOneThousand(countryData.lastDay.deaths, countryData.population);
     }
+
+    cb();
   }
 
   getWorldDaily() {

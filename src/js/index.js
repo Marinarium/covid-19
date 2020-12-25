@@ -20,10 +20,13 @@ class App {
         loadCountries: 'load-countries',
         loadDaily: 'load-daily',
         loadMap: 'load-map',
-        countryDataLoaded: 'country-data-loaded',
+        loadProgress: 'country-data-loaded',
         worldDailyCalculated: 'world-daily-calculated',
         selectCountry: 'select-country',
       },
+      timeouts: {
+        loaderHide: 1500,
+      }
     });
 
     this.client = new HttpClient(this);
@@ -36,6 +39,7 @@ class App {
 
     document.addEventListener(this.config.events.loadAll, () => console.log('loadWorld', this));
     document.addEventListener(this.config.events.loadCountries, () => console.log('loadCountries'));
+    document.addEventListener(this.config.events.loadProgress, () => console.log('countryDataLoaded'));
 
     this.view.init();
     this.storage.load();

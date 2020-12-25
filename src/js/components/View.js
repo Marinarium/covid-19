@@ -16,6 +16,8 @@ export default class View {
       countryBlock: document.querySelector('.country'),
       countryResizeButton: document.querySelector('.resize-button_country'),
       countryList: document.querySelector('.country__list'),
+      loaderMain: document.querySelector('.loader'),
+      loaderMainProgress: document.querySelector('.loader__progress-line'),
     };
     this.chart = null;
     console.log(this);
@@ -28,53 +30,54 @@ export default class View {
     this.renderChart();
     this.addListenersOnFullScreen();
 
-      document.addEventListener(this.$app.config.events.loadCountries, () => {
-          this.loaderHide.bind(this);
-          this.renderTable();
-      });
+    document.addEventListener(this.$app.config.events.loadCountries, () => {
+      this.loaderHide.bind(this);
+      this.renderTable();
+    });
   }
 
   renderStatistics() {
   }
 
   renderTable() {
-      const arrayOfNumbersAndNamesInCountry = [];
-      for (let i = 0; i < this.$storage.getAllCountries().length; i += 1) {
-          arrayOfNumbersAndNamesInCountry.push({
-              name: this.$storage.getAllCountries()[i].name,
-              totalCases: this.$storage.getAllCountries()[i].total.cases,
-          })
-      }
+    const arrayOfNumbersAndNamesInCountry = [];
+    for (let i = 0; i < this.$storage.getAllCountries().length; i += 1) {
+      arrayOfNumbersAndNamesInCountry.push({
+        name: this.$storage.getAllCountries()[i].name,
+        totalCases: this.$storage.getAllCountries()[i].total.cases,
+      })
+    }
 
-      function sortByNumbersOfCases(arr) {
-          arr.sort((a, b) => a.totalCases < b.totalCases ? 1 : -1);
-      }
-      sortByNumbersOfCases(arrayOfNumbersAndNamesInCountry);
+    function sortByNumbersOfCases(arr) {
+      arr.sort((a, b) => a.totalCases < b.totalCases ? 1 : -1);
+    }
 
-      for (let j = 0; j < arrayOfNumbersAndNamesInCountry.length; j += 1) {
-          const listItem = document.createElement('li');
-          listItem.className = "country__item";
-          this.elements.countryList.append(listItem);
+    sortByNumbersOfCases(arrayOfNumbersAndNamesInCountry);
 
-          const numberOfCasesInCountry = document.createElement('span');
-          numberOfCasesInCountry.className = "country__cases";
-          listItem.append(numberOfCasesInCountry);
-          numberOfCasesInCountry.innerText = arrayOfNumbersAndNamesInCountry[j].totalCases;
+    for (let j = 0; j < arrayOfNumbersAndNamesInCountry.length; j += 1) {
+      const listItem = document.createElement('li');
+      listItem.className = "country__item";
+      this.elements.countryList.append(listItem);
 
-          const nameOfCountry = document.createElement('h2');
-          nameOfCountry.className = "country__name";
-          listItem.append(nameOfCountry);
-          nameOfCountry.innerText = arrayOfNumbersAndNamesInCountry[j].name;
-      }
+      const numberOfCasesInCountry = document.createElement('span');
+      numberOfCasesInCountry.className = "country__cases";
+      listItem.append(numberOfCasesInCountry);
+      numberOfCasesInCountry.innerText = arrayOfNumbersAndNamesInCountry[j].totalCases;
+
+      const nameOfCountry = document.createElement('h2');
+      nameOfCountry.className = "country__name";
+      listItem.append(nameOfCountry);
+      nameOfCountry.innerText = arrayOfNumbersAndNamesInCountry[j].name;
+    }
   }
 
   renderChart() {
     this.elements.chartBlock.classList.add('loading');
-    document.addEventListener(this.$app.config.events.countryDataLoaded, (e) => {
-      this.elements.chartLoaderProgress.innerHTML = `Left: ${e.detail.left.toString().bold()} countries`;
-
-      if (!e.detail.left) this.elements.chartBlock.classList.remove('loading');
-    });
+    // document.addEventListener(this.$app.config.events.loadProgress, (e) => {
+    //   this.elements.chartLoaderProgress.innerHTML = `Left: ${e.detail.left.toString().bold()} countries`;
+    //
+    //   if (!e.detail.left) this.elements.chartBlock.classList.remove('loading');
+    // });
 
     const date = new Date();
     date.setMonth(11);
@@ -170,6 +173,16 @@ export default class View {
   }
 
   loaderShow() {
+    document.addEventListener(this.$app.config.events.loadProgress, (e) => {
+      requestAnimationFrame(() => {
+        this.elements.loaderMainProgress.style.width = `${(e.detail.current / e.detail.overall) * 100}%`;
+      });
+    });
+    document.addEventListener(this.$app.config.events.loadAll, () => {
+      setTimeout(() => {
+        this.elements.loaderMain.classList.remove('show');
+      }, this.$app.config.timeouts.loaderHide);
+    })
   }
 
   loaderHide() {
