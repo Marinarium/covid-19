@@ -6,15 +6,37 @@ export default class Storage {
     this.$app = app;
     this.$client = client;
 
-
-    this.states = {
-      selectedCountry: 'world',
-      graphMode: ''
-    };
     this.statesCollection = Mixin.deepFreeze({
-      graphModes: {
-        total: ''
-      }
+      graphModes: [
+        {
+          name: 'Total Cases',
+          cb: (country) => country.total.cases,
+        },
+        {
+          name: 'Total Deaths',
+          cb: (country) => country.total.deaths,
+        },
+        {
+          name: 'Total Recovered',
+          cb: (country) => country.total.recovered,
+        },
+        {
+          name: 'Total Cases per 100k',
+          cb: (country) => country.perOneHundredThousandTotal.cases,
+        },
+        {
+          name: 'Total Deaths per 100k',
+          cb: (country) => country.perOneHundredThousandTotal.deaths,
+        },
+        {
+          name: 'Total Recovered per 100k',
+          cb: (country) => country.perOneHundredThousandTotal.recovered,
+        },
+      ]
+    });
+    this.states = this.getStateProxy({
+      selectedCountry: 'world',
+      graphMode: 'Total Cases',
     });
 
     this.collection = {
@@ -90,7 +112,6 @@ export default class Storage {
         recovered: 0,
       },
     };
-
   }
 
   load() {
@@ -99,6 +120,34 @@ export default class Storage {
     } catch (e) {
       alert('Error loading data, please, reload page');
     }
+  }
+
+  getStateProxy(obj) {
+    const self = this;
+
+    return new Proxy(obj, {
+      set(object, property, value) {
+        object[property] = value;
+
+        const triggerGraphRender = () => {
+          const graphMode = self.statesCollection.graphModes.find((item) => item.name === value);
+
+          setTimeout(() => {
+            document.dispatchEvent(new CustomEvent(self.$app.config.events.graphModeChange, {detail: graphMode}));
+          });
+        }
+
+        if (property === 'graphMode') {
+          triggerGraphRender();
+        }
+
+        if (property === 'selectedCountry') {
+          triggerGraphRender();
+        }
+
+        return true;
+      }
+    })
   }
 
   calculateByOneThousand(count, population) {
@@ -373,16 +422,27 @@ export default class Storage {
     return this.collection.countries;
   }
 
+  getWorld() {
+    return this.collection.world;
+  }
+
+  getDailyCollectionByCallback(collection, cb) {
+    const out = [];
+
+    collection.forEach((item) => out.push({
+      date: item.date,
+      value: cb(item)
+    }));
+
+    return out;
+  }
+
   getCountryDataByCode(code) {
     const countryData = this.collection.countries.find((country) => country.iso === code);
 
     if (!countryData) throw new Error('Country not found');
 
     return countryData;
-  }
-
-  getWorldData() {
-    return this.collection.world;
   }
 
   getCountryIntensityByCallback(code, cb) {

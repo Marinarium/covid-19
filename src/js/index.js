@@ -23,6 +23,7 @@ class App {
         loadProgress: 'country-data-loaded',
         worldDailyCalculated: 'world-daily-calculated',
         selectCountry: 'select-country',
+        graphModeChange: 'graph-mode-change',
       },
       timeouts: {
         loaderHide: 1500,
@@ -37,9 +38,9 @@ class App {
   init() {
     if (window.location.hostname !== 'localhost') alert('По возможности проверьте в последний день дедлайна :)');
 
-    document.addEventListener(this.config.events.loadAll, () => console.log('loadWorld', this));
-    document.addEventListener(this.config.events.loadCountries, () => console.log('loadCountries'));
-    document.addEventListener(this.config.events.loadProgress, () => console.log('countryDataLoaded'));
+    // document.addEventListener(this.config.events.loadAll, () => console.log('loadWorld', this));
+    // document.addEventListener(this.config.events.loadCountries, () => console.log('loadCountries'));
+    // document.addEventListener(this.config.events.loadProgress, () => console.log('countryDataLoaded'));
 
     this.view.init();
     this.storage.load();

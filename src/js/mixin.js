@@ -92,7 +92,10 @@ const Mixin = {
     date.setUTCHours(0, 0, 0, 0);
 
     return date;
-  }
+  },
+  parseDateISO(dateString) {
+    return dateString.split('T').shift();
+  },
 }
 
 export default Mixin;
