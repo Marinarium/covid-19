@@ -63,18 +63,39 @@ const Mixin = {
   getCurrentYearDatesArray() {
     const out = [];
     const date = new Date();
+    const currentDate = new Date();
+    currentDate.setUTCHours(-24, 0, 0, 0);
+    const currentTimestamp = currentDate.getTime();
 
     date.setUTCFullYear(2020, 0, 1);
     date.setUTCHours(0, 0, 0, 0);
 
-    while (true) {
+    while (date.getTime() < currentTimestamp) {
       date.setDate(date.getDate() + 1);
 
-      if (date.getUTCFullYear() !== 2020) return out;
-
-      out.push(`${date.toISOString().slice(0, -5)}Z`);
+      out.push(date.toISOString());
     }
-  }
+
+    return out;
+  },
+  parseDateFromAPI(dateString) {
+    const date = new Date(dateString);
+    date.setUTCHours(24);
+
+    return date.toISOString();
+  },
+  getYesterday() {
+    const date = new Date();
+
+    date.setUTCFullYear(2020, 0);
+    date.setUTCDate(date.getUTCDate() - 1);
+    date.setUTCHours(0, 0, 0, 0);
+
+    return date;
+  },
+  parseDateISO(dateString) {
+    return dateString.split('T').shift();
+  },
 }
 
 export default Mixin;

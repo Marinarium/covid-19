@@ -1,62 +1,90 @@
-@keyframes flick {
-  0% {
-    opacity: 0.25;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.25;
-  }
-}
-
 .chart {
   position: relative;
   background-color: $main-bg;
+  user-select: none;
 
   $chart: &;
 
   &.loading {
+    pointer-events: none;
     user-select: none;
     cursor: default;
   }
 
-  &__loader {
-    #{$chart}.loading & {
-      visibility: visible;
-      opacity: 1;
-      z-index: 0;
-    }
-
+  &__body {
+    position: relative;
     display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 0;
-    height: 100%;
-    background-color: $chartLoaderBackground;
     justify-content: center;
     align-items: center;
-    transition: all .5s;
-    visibility: hidden;
-    opacity: 0;
-    z-index: -1;
+    flex-direction: column;
 
-    &-title {
-      font-size: 2rem;
-      margin-bottom: .5rem;
-      animation: flick 1.5s 0s infinite;
+    &-box {
+      height: 100%;
+      max-height: 105px;
+      max-width: 250px;
+
+      .chart_full & {
+        max-height: unset;
+        max-width: 900px;
+      }
     }
 
-    &-description {
+    &-mode {
+      padding: 0.5rem 0;
+      position: relative;
       text-align: center;
-      margin-bottom: .5rem;
+      width: 100%;
+
+      &-nav {
+        display: flex;
+        top: 50%;
+        height: 0;
+        width: 100%;
+        position: absolute;
+        justify-content: space-between;
+
+        &-prev, &-next {
+          position: absolute;
+          top: 0;
+          transform: translateY(-50%);
+          font-size: 2rem;
+          font-weight: bold;
+          cursor: pointer;
+        }
+
+        &-next {
+          right: 0;
+        }
+      }
+
+      &-current {
+        font-size: 14px;
+      }
     }
 
-    &-progress {
-      font-size: .85rem;
+    &-loader {
+      #{$chart}.loading & {
+        visibility: visible;
+        opacity: 1;
+        z-index: 0;
+      }
 
-      b {
-        font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      background-color: $chartLoaderBackground;
+      justify-content: center;
+      align-items: center;
+      transition: all .5s;
+      visibility: hidden;
+      opacity: 0;
+      z-index: -1;
+
+      &-title {
+        font-size: 2rem;
       }
     }
   }
@@ -76,21 +104,9 @@
   }
 }
 
-.chart__box {
-  height: 180px;
-  max-width: 500px;
-  //border-bottom: 1px solid #252323;
-  //border-left: 1px solid #252323;
-  margin-bottom: 20px;
-
-  .chart_full & {
-    max-width: unset;
-  }
-}
-
 .chart__title {
   font-size: 16px;
-  color: #ff8906;
+  color: $accent;
   margin-bottom: 20px;
   text-align: center;
 }

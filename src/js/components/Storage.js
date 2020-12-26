@@ -6,21 +6,44 @@ export default class Storage {
     this.$app = app;
     this.$client = client;
 
-
-    this.states = {
-      selectedCountry: 'world',
-      graphMode: ''
-    };
     this.statesCollection = Mixin.deepFreeze({
-      graphModes: {
-        total: ''
-      }
+      graphModes: [
+        {
+          name: 'Total Cases',
+          cb: (country) => country.total.cases,
+        },
+        {
+          name: 'Total Deaths',
+          cb: (country) => country.total.deaths,
+        },
+        {
+          name: 'Total Recovered',
+          cb: (country) => country.total.recovered,
+        },
+        {
+          name: 'Total Cases per 100k',
+          cb: (country) => country.perOneHundredThousandTotal.cases,
+        },
+        {
+          name: 'Total Deaths per 100k',
+          cb: (country) => country.perOneHundredThousandTotal.deaths,
+        },
+        {
+          name: 'Total Recovered per 100k',
+          cb: (country) => country.perOneHundredThousandTotal.recovered,
+        },
+      ]
+    });
+    this.states = this.getStateProxy({
+      selectedCountry: 'world',
+      graphMode: 'Total Cases',
     });
 
     this.collection = {
       dateUpdate: null,
       world: {
         population: 0,
+        daily: [],
         total: {
           cases: 0,
           recovered: 0,
@@ -31,14 +54,23 @@ export default class Storage {
           recovered: 0,
           deaths: 0,
         },
-        daily: [],
+        perOneHundredThousandTotal: {
+          cases: 0,
+          recovered: 0,
+          deaths: 0,
+        },
+        perOneHundredThousandLastDay: {
+          cases: 0,
+          recovered: 0,
+          deaths: 0,
+        },
       },
       countries: [],
     };
     this.countryExample = {
       iso: '',
       name: '',
-      slug: '',
+      nameInApi: '',
       flagLink: '',
       population: 0,
       daily: [],
@@ -69,36 +101,53 @@ export default class Storage {
     };
     this.dailyExample = {
       date: '',
-      cases: 0,
-      deaths: 0,
-      recovered: 0,
+      total: {
+        cases: 0,
+        deaths: 0,
+        recovered: 0,
+      },
+      perOneHundredThousandTotal: {
+        cases: 0,
+        deaths: 0,
+        recovered: 0,
+      },
     };
-
   }
 
   load() {
     try {
-      this.loadData();
+      this.$client.getData(this.$app.config.url.countries, {}, this.getWorldInfo.bind(this));
     } catch (e) {
       alert('Error loading data, please, reload page');
     }
   }
 
-  loadData() {
-    const cb = (data) => {
-      this.collection.dateUpdate = new Date(data.Date);
+  getStateProxy(obj) {
+    const self = this;
 
-      this.handleWorldInfo(data.Global);
-      this.handleCountriesInfo(data.Countries);
+    return new Proxy(obj, {
+      set(object, property, value) {
+        object[property] = value;
 
-      this.loadCountriesDailyInfo();
-    }
+        const triggerGraphRender = () => {
+          const graphMode = self.statesCollection.graphModes.find((item) => item.name === value);
 
-    this.$client.getData(this.$app.config.url.covid.summary, {
-      headers: {
-        'X-Access-Token': this.$app.config.apiCovidToken,
-      },
-    }, cb);
+          setTimeout(() => {
+            document.dispatchEvent(new CustomEvent(self.$app.config.events.graphModeChange, {detail: graphMode}));
+          });
+        }
+
+        if (property === 'graphMode') {
+          triggerGraphRender();
+        }
+
+        if (property === 'selectedCountry') {
+          triggerGraphRender();
+        }
+
+        return true;
+      }
+    })
   }
 
   calculateByOneThousand(count, population) {
@@ -107,16 +156,47 @@ export default class Storage {
     return +((+count / +population) * 10000).toFixed(2);
   }
 
-  handleWorldInfo(global) {
-    this.collection.world.total.cases = global.TotalConfirmed;
-    this.collection.world.total.recovered = global.TotalRecovered;
-    this.collection.world.total.deaths = global.TotalDeaths;
+  getWorldInfo(countriesInfo) {
+    this.collection.dateUpdate = Mixin.getYesterday();
+    this.collection.countries.length = 0;
 
-    this.collection.world.lastDay.cases = global.NewConfirmed;
-    this.collection.world.lastDay.recovered = global.NewRecovered;
-    this.collection.world.lastDay.deaths = global.NewDeaths;
+    const countriesIso = countriesInfo.reduce((out, country) => {
+      out.push(country.alpha2Code);
 
-    document.dispatchEvent(new Event(this.$app.config.events.loadWorld));
+      return out;
+    }, []).join(',');
+
+    countriesInfo.forEach((country) => {
+      this.collection.countries.push(this.getCountryBaseInfo(country));
+    });
+
+    this.getCountriesInfoAllTime(countriesIso);
+  }
+
+  getCountryBaseInfo(info) {
+    const countryExample = Mixin.deepClone(this.countryExample);
+    const datesCollection = Mixin.getCurrentYearDatesArray();
+
+    countryExample.iso = info.alpha2Code;
+    countryExample.name = info.name;
+    countryExample.population = info.population;
+    countryExample.flagLink = info.flag;
+
+    [countryExample.coords.latitude, countryExample.coords.longitude] = info.latlng;
+
+    datesCollection.forEach((date) => {
+      countryExample.daily.push(this.getCountryDailyData(date));
+    });
+
+    return countryExample;
+  }
+
+  getCountryDailyData(date) {
+    const dailyExample = Mixin.deepClone(this.dailyExample);
+
+    dailyExample.date = date;
+
+    return dailyExample;
   }
 
   handleCountriesInfo(collection) {
@@ -129,7 +209,6 @@ export default class Storage {
 
       countryExample.iso = localCountryData.iso2;
       countryExample.name = localCountryData.country;
-      countryExample.slug = localCountryData.slug;
       countryExample.population = populationCount;
       countryExample.flagLink = this.$app.config.url.flag.replace('<ISO>', localCountryData.iso2);
 
@@ -164,117 +243,198 @@ export default class Storage {
     document.dispatchEvent(new Event(this.$app.config.events.loadCountries));
   }
 
-  loadCountriesDailyInfo() {
-    const loadingInfo = {
-      queue: [],
-      countBad: 0,
-    };
-    let timeout = this.$app.config.timeouts.dailyLoad;
-    let count = 0;
-
-    this.collection.countries.forEach((country) => {
-      timeout += this.$app.config.timeouts.dailyLoad;
-      loadingInfo.queue.push(country.slug);
-
-      count += 1;
-      if (count > 15) return;
-
-      setTimeout(this.getCountryDailyData.bind(this, country, loadingInfo), timeout);
-    });
-
-    document.addEventListener(this.$app.config.events.loadDaily, this.calculateWordDaily.bind(this));
-  }
-
-  getCountryDailyData(country, loadingInfo, isBad = false) {
-    const {slug} = country;
-    const cbError = () => {
-      if (!isBad) loadingInfo.countBad += 1;
-      const calcTimeout = this.calcRepeatTimeout(loadingInfo.countBad);
-
-      setTimeout(this.getCountryDailyData.bind(this, country, loadingInfo, true), calcTimeout);
-    };
+  getCountriesInfoAllTime(countriesIso) {
     const cb = (data) => {
-      if (data.success === false) {
-        cbError(country, loadingInfo, isBad);
+      const loadingInfo = {
+        overall: data.length,
+        current: 0,
+      };
 
-        return;
+      const nextStep = () => {
+        loadingInfo.current += 1;
+
+        if (loadingInfo.current > loadingInfo.overall) return;
+
+        document.dispatchEvent(new CustomEvent(this.$app.config.events.loadProgress, {detail: loadingInfo}));
+
+        setTimeout(() => {
+          this.writeCountryDailyData(data[loadingInfo.current], loadingInfo.current, nextStep);
+        });
+      };
+
+      this.writeCountryDailyData(data[loadingInfo.current], loadingInfo.current, nextStep);
+
+      document.addEventListener(this.$app.config.events.loadProgress, (e) => {
+        if (e.detail.current === e.detail.overall) {
+          document.dispatchEvent(new Event(this.$app.config.events.loadCountries));
+          this.getWorldDaily();
+        }
+      })
+    }
+
+    this.$client.getData(this.$app.config.url.covid.historical.replace('<PATH>', countriesIso), {}, cb);
+  }
+
+  writeCountryDailyData(info, index, cb) {
+    if (!info) {
+      cb();
+
+      return;
+    }
+
+    this.collection.countries[index].nameInApi = info.country;
+    const countryData = this.collection.countries.find((item) => item.nameInApi === info.country);
+    let previousIndex = 0;
+
+    if (!countryData) return;
+
+    const reformatCollection = {};
+    countryData.daily.forEach((item) => {
+      reformatCollection[item.date] = {
+        cases: 0,
+        deaths: 0,
+        recovered: 0,
+      };
+    });
+
+    Object.keys(info.timeline).forEach((key) => {
+      Object.keys(info.timeline[key]).forEach((date) => {
+        reformatCollection[Mixin.parseDateFromAPI(date)][key] = info.timeline[key][date];
+      });
+    });
+
+    Object.keys(reformatCollection).forEach((date) => {
+      const countryDailyIndex = countryData.daily.findIndex((item) => item.date === date);
+      const countryDaily = countryData.daily[countryDailyIndex];
+      const countryDailyPreviousIndex = countryDailyIndex - 1;
+      const countryDailyPrevious = countryData.daily[countryDailyPreviousIndex];
+      const apiData = reformatCollection[date];
+
+      countryDaily.total.cases = apiData.cases;
+      countryDaily.total.recovered = apiData.recovered;
+      countryDaily.total.deaths = apiData.deaths;
+
+      countryDaily.perOneHundredThousandTotal.cases = this.calculateByOneThousand(apiData.cases, countryData.population);
+      countryDaily.perOneHundredThousandTotal.recovered = this.calculateByOneThousand(apiData.recovered, countryData.population);
+      countryDaily.perOneHundredThousandTotal.deaths = this.calculateByOneThousand(apiData.deaths, countryData.population);
+
+      if (countryDailyPreviousIndex > 0 && apiData.cases > countryDailyPrevious.total.cases) previousIndex = countryDailyPreviousIndex;
+    });
+
+    if (previousIndex) {
+      const countryDailyPrevious = countryData.daily[previousIndex];
+      const countryDailyCurrent = countryData.daily[previousIndex + 1];
+
+      countryData.total.cases = countryDailyCurrent.total.cases;
+      countryData.total.recovered = countryDailyCurrent.total.recovered;
+      countryData.total.deaths = countryDailyCurrent.total.deaths;
+
+      countryData.perOneHundredThousandTotal.cases = this.calculateByOneThousand(countryDailyCurrent.total.cases, countryData.population);
+      countryData.perOneHundredThousandTotal.recovered = this.calculateByOneThousand(countryDailyCurrent.total.recovered, countryData.population);
+      countryData.perOneHundredThousandTotal.deaths = this.calculateByOneThousand(countryDailyCurrent.total.deaths, countryData.population);
+
+      countryData.lastDay.cases = countryDailyCurrent.total.cases - countryDailyPrevious.total.cases;
+      countryData.lastDay.recovered = countryDailyCurrent.total.recovered - countryDailyPrevious.total.recovered;
+      countryData.lastDay.deaths = countryDailyCurrent.total.deaths - countryDailyPrevious.total.deaths;
+
+      countryData.perOneHundredThousandLastDay.cases = this.calculateByOneThousand(countryData.lastDay.cases, countryData.population);
+      countryData.perOneHundredThousandLastDay.recovered = this.calculateByOneThousand(countryData.lastDay.recovered, countryData.population);
+      countryData.perOneHundredThousandLastDay.deaths = this.calculateByOneThousand(countryData.lastDay.deaths, countryData.population);
+    }
+
+    cb();
+  }
+
+  getWorldDaily() {
+    const cb = (info) => {
+      const worldData = this.collection.world;
+      const datesCollection = Mixin.getCurrentYearDatesArray();
+      const reformatCollection = {};
+      let previousIndex = 0;
+      worldData.population = this.calculateWorldPopulation();
+
+      datesCollection.forEach((date) => {
+        worldData.daily.push(this.getCountryDailyData(date));
+
+        reformatCollection[date] = {
+          cases: 0,
+          deaths: 0,
+          recovered: 0,
+        };
+      });
+
+      ['cases', 'deaths', 'recovered'].forEach((key) => {
+        Object.keys(info[key]).forEach((date) => {
+          reformatCollection[Mixin.parseDateFromAPI(date)][key] = info[key][date];
+        });
+      });
+
+      Object.keys(reformatCollection).forEach((date) => {
+        const worldDailyIndex = worldData.daily.findIndex((item) => item.date === date);
+        const worldDaily = worldData.daily[worldDailyIndex];
+        const worldDailyPreviousIndex = worldDailyIndex - 1;
+        const worldDailyPrevious = worldData.daily[worldDailyPreviousIndex];
+        const apiData = reformatCollection[date];
+
+        worldDaily.total.cases = apiData.cases;
+        worldDaily.total.recovered = apiData.recovered;
+        worldDaily.total.deaths = apiData.deaths;
+
+        worldDaily.perOneHundredThousandTotal.cases = this.calculateByOneThousand(apiData.cases, worldData.population);
+        worldDaily.perOneHundredThousandTotal.recovered = this.calculateByOneThousand(apiData.recovered, worldData.population);
+        worldDaily.perOneHundredThousandTotal.deaths = this.calculateByOneThousand(apiData.deaths, worldData.population);
+
+        if (worldDailyPreviousIndex > 0 && apiData.cases > worldDailyPrevious.total.cases) previousIndex = worldDailyPreviousIndex;
+      });
+
+      if (previousIndex) {
+        const countryDailyPrevious = worldData.daily[previousIndex];
+        const countryDailyCurrent = worldData.daily[previousIndex + 1];
+
+        worldData.total.cases = countryDailyCurrent.total.cases;
+        worldData.total.recovered = countryDailyCurrent.total.recovered;
+        worldData.total.deaths = countryDailyCurrent.total.deaths;
+
+        worldData.perOneHundredThousandTotal.cases = this.calculateByOneThousand(countryDailyCurrent.total.cases, worldData.population);
+        worldData.perOneHundredThousandTotal.recovered = this.calculateByOneThousand(countryDailyCurrent.total.recovered, worldData.population);
+        worldData.perOneHundredThousandTotal.deaths = this.calculateByOneThousand(countryDailyCurrent.total.deaths, worldData.population);
+
+        worldData.lastDay.cases = countryDailyCurrent.total.cases - countryDailyPrevious.total.cases;
+        worldData.lastDay.recovered = countryDailyCurrent.total.recovered - countryDailyPrevious.total.recovered;
+        worldData.lastDay.deaths = countryDailyCurrent.total.deaths - countryDailyPrevious.total.deaths;
+
+        worldData.perOneHundredThousandLastDay.cases = this.calculateByOneThousand(worldData.lastDay.cases, worldData.population);
+        worldData.perOneHundredThousandLastDay.recovered = this.calculateByOneThousand(worldData.lastDay.recovered, worldData.population);
+        worldData.perOneHundredThousandLastDay.deaths = this.calculateByOneThousand(worldData.lastDay.deaths, worldData.population);
       }
 
-      if (isBad) loadingInfo.countBad -= 1;
-
-      const {queue} = loadingInfo;
-      queue.splice(queue.indexOf(slug), 1);
-
-      this.writeCountryDailyData(country.iso, data);
-      document.dispatchEvent(new CustomEvent(this.$app.config.events.countryDataLoaded, {detail: {left: loadingInfo.queue.length}}));
-
-      if (!queue.length) {
-        document.dispatchEvent(new Event(this.$app.config.events.loadDaily));
-      }
+      document.dispatchEvent(new Event(this.$app.config.events.loadAll));
     };
 
-    this.$client.getData(`${this.$app.config.url.covid.countryDayOne}/${slug}`, {}, cb)
-      .catch(cbError.bind(this, country, loadingInfo, isBad));
+    this.$client.getData(this.$app.config.url.covid.summary, {}, cb);
   }
 
-  writeCountryDailyData(iso, countryApiData) {
-    const countryData = this.collection.countries.find((item) => item.iso === iso);
-
-    if (!countryData) throw new Error('Country not found');
-
-    const countryDailyCollection = countryData.daily;
-    this.fillByEmptyDateCollection(countryDailyCollection);
-
-    countryApiData.forEach((dayData) => {
-      const countryDateInfo = countryDailyCollection.find((item) => item.date === dayData.Date);
-
-      if (!countryDateInfo) throw new Error('Date not found');
-
-      countryDateInfo.cases += dayData.Confirmed;
-      countryDateInfo.deaths += dayData.Deaths;
-      countryDateInfo.recovered += dayData.Recovered;
-    });
-  }
-
-  calculateWordDaily() {
-    this.fillByEmptyDateCollection(this.collection.world.daily);
-
-    this.collection.countries.forEach((country) => {
-      this.collection.world.population += country.population;
-
-      country.daily.forEach((countryDailyData) => {
-        const {date} = countryDailyData;
-        const worldDailyData = this.collection.world.daily.find((item) => item.date === date);
-
-        if (!worldDailyData) throw new Error('Date not found');
-
-        worldDailyData.cases += countryDailyData.Confirmed;
-        worldDailyData.deaths += countryDailyData.Deaths;
-        worldDailyData.recovered += countryDailyData.Recovered;
-      })
-    });
-
-    document.dispatchEvent(new Event(this.$app.config.events.worldDailyCalculated));
-  }
-
-  fillByEmptyDateCollection(arrayToFill) {
-    arrayToFill.length = 0;
-    const datesCollection = Mixin.getCurrentYearDatesArray();
-
-    datesCollection.forEach((date) => {
-      const example = {...this.dailyExample};
-      example.date = date;
-
-      arrayToFill.push(example);
-    });
-  }
-
-  calcRepeatTimeout(currentErrorsCount) {
-    return currentErrorsCount * this.$app.config.timeouts.dailyLoad;
+  calculateWorldPopulation() {
+    return this.collection.countries.reduce((out, item) => out + item.population, 0);
   }
 
   getAllCountries() {
     return this.collection.countries;
+  }
+
+  getWorld() {
+    return this.collection.world;
+  }
+
+  getDailyCollectionByCallback(collection, cb) {
+    const out = [];
+
+    collection.forEach((item) => out.push({
+      date: item.date,
+      value: cb(item)
+    }));
+
+    return out;
   }
 
   getCountryDataByCode(code) {
@@ -283,10 +443,6 @@ export default class Storage {
     if (!countryData) throw new Error('Country not found');
 
     return countryData;
-  }
-
-  getWorldData() {
-    return this.collection.world;
   }
 
   getCountryIntensityByCallback(code, cb) {
