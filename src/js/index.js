@@ -36,7 +36,10 @@ class App {
   }
 
   init() {
-    if (window.location.hostname !== 'localhost') alert('По возможности проверьте в последний день дедлайна :)');
+    if (window.location.hostname !== 'localhost') {
+      alert('Пожалуйста, проверьте в последний день дедлайна кросс-чека, функционал не доделан исключительно из-за нехватки свободного времени');
+      alert('Спасибо :)');
+    }
 
     // document.addEventListener(this.config.events.loadAll, () => console.log('loadWorld', this));
     // document.addEventListener(this.config.events.loadCountries, () => console.log('loadCountries'));
