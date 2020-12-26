@@ -11,7 +11,7 @@
     <!--For Map-->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>
     <link rel="stylesheet" href="https://cdn.maptiler.com/mapbox-gl-js/v0.53.0/mapbox-gl.css"/>
-<link rel="shortcut icon" href="favicon.png"><link href="style.b97187b9c395f9ff7a48.css" rel="stylesheet"></head>
+<link rel="shortcut icon" href="favicon.png"><link href="style.d29563fd048fedfc85cd.css" rel="stylesheet"></head>
 <body class="body">
 <div class="content">
     <header class="header">
@@ -67,12 +67,19 @@
             </div>
             <div class="chart">
                 <div class="resize-button resize-button_chart"></div>
-                <canvas class="chart__box"></canvas>
                 <h3 class="chart__title">Chart</h3>
-                <div class="chart__loader">
-                  <span class="chart__loader-title">Loading...</span>
-                  <span class="chart__loader-description">Please, take a while, loading data can be about 2 min</span>
-                  <span class="chart__loader-progress">Computing</span>
+                <div class="chart__body">
+                    <canvas class="chart__body-box"></canvas>
+                    <div class="chart__body-mode">
+                        <div class="chart__body-mode-nav">
+                            <div class="chart__body-mode-nav-prev"><</div>
+                            <div class="chart__body-mode-nav-next">></div>
+                        </div>
+                        <div class="chart__body-mode-current">Total Cases</div>
+                    </div>
+                    <div class="chart__body-loader">
+                        <span class="chart__body-loader-title">Computing</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -93,80 +100,7 @@
                     </button>
                 </form>
             </div>
-            <ul class="country__list">
-<!--                <li class="country__item">
-                    <span class="country__cases">16 135 597</span>
-                    <h2 class="country__name">US</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">9 857 029</span>
-                    <h2 class="country__name">India</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">6 880 127</span>
-                    <h2 class="country__name">Brazil</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">2 629 699</span>
-                    <h2 class="country__name">Russia</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">2 419 079</span>
-                    <h2 class="country__name">France</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 854 490</span>
-                    <h2 class="country__name">United Kingdom</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 843 712</span>
-                    <h2 class="country__name">Italy</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 809 809</span>
-                    <h2 class="country__name">Turkey</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 730 575</span>
-                    <h2 class="country__name">Spain</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 494 602</span>
-                    <h2 class="country__name">Argentina</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 417 072</span>
-                    <h2 class="country__name">Colombia</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 337 841</span>
-                    <h2 class="country__name">Germany</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 241 436</span>
-                    <h2 class="country__name">Mexico</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 135 676</span>
-                    <h2 class="country__name">Poland</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">1 108 269</span>
-                    <h2 class="country__name">Iran</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">980 943</span>
-                    <h2 class="country__name">Peru</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">918 444</span>
-                    <h2 class="country__name">Ukraine</h2>
-                </li>
-                <li class="country__item">
-                    <span class="country__cases">852 965</span>
-                    <h2 class="country__name">South Africa</h2>
-                </li>-->
-            </ul>
+            <ul class="country__list"></ul>
         </div>
     </main>
 </div>
@@ -186,12 +120,19 @@
     </div>
     <div class="year">2020</div>
 </footer>
+<div class="loader show">
+  <div class="loader__header">Loading...</div>
+  <div class="loader__text">Please, wait, data is being processed</div>
+  <div class="loader__progress">
+    <div class="loader__progress-line"></div>
+  </div>
+</div>
 <!-- Vendor scripts -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!--For Map-->
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 <script src="https://cdn.maptiler.com/mapbox-gl-js/v0.53.0/mapbox-gl.js"></script>
 <script src="https://cdn.maptiler.com/mapbox-gl-leaflet/latest/leaflet-mapbox-gl.js"></script>
-<script type="text/javascript" src="index.6a9cd63347801cab942e.js"></script></body>
+<script type="text/javascript" src="index.c18e8dee85ac87e21cf2.js"></script></body>
 
 </html>
