@@ -1,11 +1,12 @@
 import Charts from './Charts';
-import map from '../open-street-map';
+import Map from './Map';
 
 export default class View {
   constructor(app, storage) {
     this.$app = app;
     this.$storage = storage;
     this.chart = new Charts(this.$app);
+    this.map = new Map(this.$app);
 
     this.elements = {
       mainContent: document.querySelector('.main'),
@@ -32,7 +33,6 @@ export default class View {
       casesButton: document.querySelector('.switches__btn_cases'),
       countryFilterInput: document.querySelector('.search__input'),
     };
-    console.log(this);
   }
 
   init() {
@@ -168,7 +168,7 @@ export default class View {
   }
 
   renderMap() {
-    map.addMap();
+    this.map.init();
   }
 
   addLoaderListeners() {
