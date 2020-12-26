@@ -185,35 +185,17 @@ export default class View {
 
   addFullScreenListeners() {
     this.elements.mainContent.addEventListener('click', (event) => {
-      const fullScreenAvailable = window.innerWidth >= 920;
-
-      if (!fullScreenAvailable) return;
-
       if (event.target === this.elements.statisticResizeButton) {
-        this.elements.statisticBlock.classList.toggle('statistic_full');
+        document.body.classList.toggle('fullscreen__statistics');
         this.elements.statisticResizeButton.classList.toggle('resize-button_minimize');
       }
       if (event.target === this.elements.chart.resizeButton) {
-        this.elements.chart.block.classList.toggle('chart_full');
+        document.body.classList.toggle('fullscreen__chart');
         this.elements.chart.resizeButton.classList.toggle('resize-button_minimize');
       }
       if (event.target === this.elements.countryResizeButton) {
-        this.elements.countryBlock.classList.toggle('country_full');
+        document.body.classList.toggle('fullscreen__country');
         this.elements.countryResizeButton.classList.toggle('resize-button_minimize');
-      }
-    });
-
-    window.addEventListener('resize', () => {
-      const fullScreenAvailable = window.innerWidth >= 920;
-
-      if (!fullScreenAvailable) {
-        ['statistic_full', 'chart_full', 'country_full'].forEach((cls) => {
-          requestAnimationFrame(() => {
-            const elem = document.querySelector(`.${cls}`);
-
-            if (elem) elem.classList.remove(cls);
-          });
-        });
       }
     });
   }

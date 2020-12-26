@@ -5,6 +5,18 @@
 
   $chart: &;
 
+  .fullscreen__chart & {
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+    z-index: 100000;
+    height: 100%;
+    width: 100%;
+    padding: 0 20px;
+  }
+
   &.loading {
     pointer-events: none;
     user-select: none;
@@ -20,10 +32,10 @@
 
     &-box {
       height: 100%;
-      max-height: 105px;
+      //max-height: 105px;
       max-width: 250px;
 
-      .chart_full & {
+      .fullscreen__chart & {
         max-height: unset;
         max-width: 900px;
       }
@@ -107,6 +119,6 @@
 .chart__title {
   font-size: 16px;
   color: $accent;
-  margin-bottom: 20px;
+  //margin-bottom: 20px;
   text-align: center;
 }
