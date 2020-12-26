@@ -47,6 +47,7 @@ export default class Storage {
         countries: false,
         world: false,
       },
+      filterQuery: '',
       selectedCountry: 'world',
       typePeriod: this.statesCollection.periodModes.allTime,
       typeCases: this.statesCollection.casesModes.allCases,
@@ -169,6 +170,10 @@ export default class Storage {
 
         if (property === 'typeCases') {
           document.dispatchEvent(new Event(self.$app.config.events.casesChanged));
+        }
+
+        if (property === 'filterQuery') {
+          document.dispatchEvent(new Event(self.$app.config.events.countryFilterChanged));
         }
 
         return true;

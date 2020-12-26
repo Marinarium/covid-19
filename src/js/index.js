@@ -26,6 +26,7 @@ class App {
         periodChanged: 'period-changed',
         casesChanged: 'cases-changed',
         graphModeChange: 'graph-mode-change',
+        countryFilterChanged: 'country-filter-changed',
       },
       timeouts: {
         loaderHide: 1500,

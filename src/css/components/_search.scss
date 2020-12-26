@@ -4,9 +4,9 @@
   border-bottom: 1px solid $paragraph;
 }
 
-.country_full .search {
-  max-width: 370px;
-}
+//.country_full .search {
+//  max-width: 370px;
+//}
 
 .search__input,
 .search__button {
@@ -49,6 +49,12 @@ input::-ms-clear {
   right: 0;
   cursor: pointer;
   padding: 0;
+
+  img {
+    width: 17px;
+    height: 17px;
+    filter: invert(1);
+  }
 }
 
 .icon_color {

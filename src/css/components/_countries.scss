@@ -41,6 +41,10 @@
   padding: 10px;
   white-space: nowrap;
   cursor: pointer;
+
+  &:hover {
+    opacity: 0.85;
+  }
 }
 
 .country__cases {
@@ -51,8 +55,17 @@
   margin-bottom: 6px;
 }
 
-.country__name {
+.country__name-text {
   font-size: 14px;
+  font-weight: bold;
   display: inline-block;
+  text-overflow: ellipsis;
+  width: calc(100% - 25px);
+  overflow: hidden;
+}
+
+.country__name-flag {
+  width: 20px;
+  margin-right: 5px;
 }
 

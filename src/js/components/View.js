@@ -29,6 +29,7 @@ export default class View {
       timeButton: document.querySelector('.switches__btn_time'),
       casesSwitcher: document.querySelector('.switches__item_cases'),
       casesButton: document.querySelector('.switches__btn_cases'),
+      countryFilterInput: document.querySelector('.search__input'),
     };
     console.log(this);
   }
@@ -39,20 +40,26 @@ export default class View {
     this.renderChart();
 
     this.addFullScreenListeners();
-    this.addSwitchListenters();
+    this.addSwitchListeners();
     this.addCountriesListListeners();
+    this.addCountryFilterListeners();
 
-    document.addEventListener(this.$app.config.events.loadCountries, () => {
+    const handler = () => {
+      this.renderStatistics();
       this.renderTable();
-    });
+    };
 
-    document.addEventListener(this.$app.config.events.loadAll, () => {
+    document.addEventListener(this.$app.config.events.loadAll, handler);
+
+    document.addEventListener(this.$app.config.events.periodChanged, handler);
+    document.addEventListener(this.$app.config.events.casesChanged, handler);
+    document.addEventListener(this.$app.config.events.countryChanged, () => {
       this.renderStatistics();
     });
 
-    document.addEventListener(this.$app.config.events.countryChanged, this.renderStatistics.bind(this));
-    document.addEventListener(this.$app.config.events.periodChanged, this.renderStatistics.bind(this));
-    document.addEventListener(this.$app.config.events.casesChanged, this.renderStatistics.bind(this));
+    document.addEventListener(this.$app.config.events.countryFilterChanged, () => {
+      this.renderTable();
+    });
   }
 
   renderStatistics() {
@@ -96,39 +103,63 @@ export default class View {
   }
 
   renderTable() {
-    const arrayOfNumbersAndNamesInCountry = [];
+    if (!this.$storage.states.isDataLoad.countries || !this.$storage.states.isDataLoad.world) return;
 
-    for (let i = 0; i < this.$storage.getAllCountries().length; i += 1) {
-      arrayOfNumbersAndNamesInCountry.push({
-        name: this.$storage.getAllCountries()[i].name,
-        totalCases: this.$storage.getAllCountries()[i].total.cases,
-        iso: this.$storage.getAllCountries()[i].iso,
+    this.elements.countryList.innerHTML = '';
+
+    const {states} = this.$storage;
+    const {periodModes} = this.$storage.statesCollection;
+    const {casesModes} = this.$storage.statesCollection;
+    const pattern = new RegExp(states.filterQuery, 'i');
+
+    const tableModes = {
+      [`${periodModes.allTime}-${casesModes.allCases}`]: (country) => country.total.cases,
+      [`${periodModes.lastDay}-${casesModes.allCases}`]: (country) => country.lastDay.cases,
+      [`${periodModes.allTime}-${casesModes.per100k}`]: (country) => country.perOneHundredThousandTotal.cases,
+      [`${periodModes.lastDay}-${casesModes.per100k}`]: (country) => country.perOneHundredThousandLastDay.cases,
+    };
+
+    const countriesCollection = this.$storage.getAllCountries()
+      .filter((country) => {
+        if (!states.filterQuery) return true;
+
+        return (pattern.test(country.iso) || pattern.test(country.name));
       })
-    }
+      .map((country) => {
+        return {
+          name: country.name,
+          flag: country.flagLink,
+          iso: country.iso,
+          value: tableModes[`${states.typePeriod}-${states.typeCases}`](country),
+        };
+      })
+      .sort((a, b) => a.value < b.value ? 1 : -1);
 
-    function sortByNumbersOfCases(arr) {
-      arr.sort((a, b) => a.totalCases < b.totalCases ? 1 : -1);
-    }
-
-    sortByNumbersOfCases(arrayOfNumbersAndNamesInCountry);
-
-    for (let j = 0; j < arrayOfNumbersAndNamesInCountry.length; j += 1) {
+    countriesCollection.forEach((country) => {
       const listItem = document.createElement('li');
-      listItem.className = "country__item";
-      listItem.setAttribute('data-iso', arrayOfNumbersAndNamesInCountry[j].iso);
-      listItem.setAttribute('data-country', arrayOfNumbersAndNamesInCountry[j].name);
+      listItem.className = 'country__item';
+      listItem.setAttribute('data-iso', country.iso);
+
+      const countrySortValue = document.createElement('span');
+      countrySortValue.className = 'country__cases';
+      countrySortValue.innerText = country.value;
+
+      const nameWrapper = document.createElement('div');
+      nameWrapper.className = 'country__name'
+
+      const countryFlag = document.createElement('img');
+      countryFlag.className = 'country__name-flag';
+      countryFlag.src = country.flag;
+
+      const countryName = document.createElement('div');
+      countryName.className = 'country__name-text';
+      countryName.innerText = country.name;
+
+      nameWrapper.append(countryFlag, countryName);
+      listItem.append(countrySortValue, nameWrapper);
+
       this.elements.countryList.append(listItem);
-
-      const numberOfCasesInCountry = document.createElement('span');
-      numberOfCasesInCountry.className = "country__cases";
-      listItem.append(numberOfCasesInCountry);
-      numberOfCasesInCountry.innerText = arrayOfNumbersAndNamesInCountry[j].totalCases.toLocaleString();
-
-      const nameOfCountry = document.createElement('h2');
-      nameOfCountry.className = "country__name";
-      listItem.append(nameOfCountry);
-      nameOfCountry.innerText = arrayOfNumbersAndNamesInCountry[j].name;
-    }
+    });
   }
 
   renderChart() {
@@ -154,6 +185,10 @@ export default class View {
 
   addFullScreenListeners() {
     this.elements.mainContent.addEventListener('click', (event) => {
+      const fullScreenAvailable = window.innerWidth >= 920;
+
+      if (!fullScreenAvailable) return;
+
       if (event.target === this.elements.statisticResizeButton) {
         this.elements.statisticBlock.classList.toggle('statistic_full');
         this.elements.statisticResizeButton.classList.toggle('resize-button_minimize');
@@ -167,9 +202,23 @@ export default class View {
         this.elements.countryResizeButton.classList.toggle('resize-button_minimize');
       }
     });
+
+    window.addEventListener('resize', () => {
+      const fullScreenAvailable = window.innerWidth >= 920;
+
+      if (!fullScreenAvailable) {
+        ['statistic_full', 'chart_full', 'country_full'].forEach((cls) => {
+          requestAnimationFrame(() => {
+            const elem = document.querySelector(`.${cls}`);
+
+            if (elem) elem.classList.remove(cls);
+          });
+        });
+      }
+    });
   }
 
-  addSwitchListenters() {
+  addSwitchListeners() {
     const loadStates = this.$storage.states.isDataLoad;
     const {periodModes} = this.$storage.statesCollection;
     const {casesModes} = this.$storage.statesCollection;
@@ -206,6 +255,22 @@ export default class View {
   addCountriesListListeners() {
     this.elements.countryList.addEventListener('click', (event) => {
       this.$storage.states.selectedCountry = event.target.closest('[data-iso]').dataset.iso;
+    });
+  }
+
+  addCountryFilterListeners() {
+    const handler = (e) => {
+      setTimeout(() => {
+        this.$storage.states.filterQuery = e.target.value;
+      });
+    };
+
+    this.elements.countryFilterInput.addEventListener('keydown', handler);
+
+    document.forms[0].addEventListener('reset', () => {
+      setTimeout(() => {
+        this.$storage.states.filterQuery = '';
+      });
     });
   }
 }
