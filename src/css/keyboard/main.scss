@@ -1,0 +1,113 @@
+$font-weight-thin: 200;
+$font-weight-medium: 500;
+$font-weight-bold: 900;
+
+$transition-short: 0.15s;
+$transition-default: 0.25s;
+$transition-long: 0.5s;
+
+$color-main-background: #16a652;
+$color-white: #fff;
+$color-black: #000;
+
+
+@mixin media-sm {
+  @media screen and (max-width: 700px) {
+    @content;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.keyboard {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px 15px;
+  z-index: 5000;
+  backdrop-filter: blur(5px) grayscale(75%) brightness(25%);
+  user-select: none;
+  transition: all $transition-long ease-out;
+  transform: translateY(100%);
+  will-change: transform;
+
+  $keyboard: &;
+
+  &.show {
+    transform: none;
+  }
+
+  &__line {
+    display: flex;
+    width: 100%;
+    max-width: 1024px;
+    justify-content: center;
+
+    &-button {
+      display: inline-flex;
+      height: 45px;
+      margin: 3px;
+      width: 7%;
+      background-color: #ffffff59;
+      border-radius: 5px;
+      text-shadow: none;
+      transition: all $transition-short;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      line-height: 45px;
+      cursor: pointer;
+      padding: 0 3px;
+      font-weight: 200;
+
+      @include media-sm {
+        height: 35px;
+        line-height: 35px;
+        padding: 0 2px;
+        font-size: 16px;
+        margin: 3px 2px;
+      }
+
+      &--wide {
+        width: 12%;
+      }
+
+      &--extra-wide {
+        width: 36%;
+      }
+
+      &:hover, &.highlight,
+      #{$keyboard}.uppercase &.key-20, #{$keyboard}.shifted &.key-16, #{$keyboard}.muted &.key-toggleSound,
+      #{$keyboard}.listening &.key-toggleVoiceRecognition {
+        background-color: #ffffff1a;
+      }
+
+      &:active, &.highlight {
+        box-shadow: 0 0 4px $color-white;
+      }
+
+      &-text {
+        transition: all $transition-default;
+        will-change: transition;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        &--hide {
+          transform: translateX(-10px);
+          opacity: 0;
+        }
+
+        &--show {
+          transform: translateX(+10px);
+          opacity: 0;
+          transition: none;
+        }
+      }
+    }
+  }
+}

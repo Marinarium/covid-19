@@ -3,6 +3,7 @@ import '../css/style.scss';
 import HttpClient from './components/HttpClient';
 import Storage from './components/Storage';
 import View from './components/View';
+import Keyboard from './components/Keyboard';
 import Mixin from './mixin';
 
 class App {
@@ -43,6 +44,7 @@ class App {
     this.client = new HttpClient(this);
     this.storage = new Storage(this, this.client);
     this.view = new View(this, this.storage);
+    this.keyboard = new Keyboard(document.querySelector('.search__input'));
   }
 
   init() {

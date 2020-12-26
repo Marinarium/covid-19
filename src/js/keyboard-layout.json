@@ -1,0 +1,793 @@
+{
+  "lines": [
+    [
+      {
+        "keyCode": 192,
+        "chars": {
+          "ru": {
+            "normal": "ё",
+            "uppercase": "Ё",
+            "shift": "Ё"
+          },
+          "en": {
+            "normal": "`",
+            "uppercase": "`",
+            "shift": "~"
+          }
+        }
+      },
+      {
+        "keyCode": 49,
+        "chars": {
+          "ru": {
+            "normal": "1",
+            "uppercase": "1",
+            "shift": "!"
+          },
+          "en": {
+            "normal": "1",
+            "uppercase": "1",
+            "shift": "!"
+          }
+        }
+      },
+      {
+        "keyCode": 50,
+        "chars": {
+          "ru": {
+            "normal": "2",
+            "uppercase": "2",
+            "shift": "\""
+          },
+          "en": {
+            "normal": "2",
+            "uppercase": "2",
+            "shift": "@"
+          }
+        }
+      },
+      {
+        "keyCode": 51,
+        "chars": {
+          "ru": {
+            "normal": "3",
+            "uppercase": "3",
+            "shift": "№"
+          },
+          "en": {
+            "normal": "3",
+            "uppercase": "3",
+            "shift": "#"
+          }
+        }
+      },
+      {
+        "keyCode": 52,
+        "chars": {
+          "ru": {
+            "normal": "4",
+            "uppercase": "4",
+            "shift": ";"
+          },
+          "en": {
+            "normal": "4",
+            "uppercase": "4",
+            "shift": "$"
+          }
+        }
+      },
+      {
+        "keyCode": 53,
+        "chars": {
+          "ru": {
+            "normal": "5",
+            "uppercase": "5",
+            "shift": "%"
+          },
+          "en": {
+            "normal": "5",
+            "uppercase": "5",
+            "shift": "%"
+          }
+        }
+      },
+      {
+        "keyCode": 54,
+        "chars": {
+          "ru": {
+            "normal": "6",
+            "uppercase": "6",
+            "shift": ":"
+          },
+          "en": {
+            "normal": "6",
+            "uppercase": "6",
+            "shift": "^"
+          }
+        }
+      },
+      {
+        "keyCode": 55,
+        "chars": {
+          "ru": {
+            "normal": "7",
+            "uppercase": "7",
+            "shift": "?"
+          },
+          "en": {
+            "normal": "7",
+            "uppercase": "7",
+            "shift": "&"
+          }
+        }
+      },
+      {
+        "keyCode": 56,
+        "chars": {
+          "ru": {
+            "normal": "8",
+            "uppercase": "8",
+            "shift": "*"
+          },
+          "en": {
+            "normal": "8",
+            "uppercase": "8",
+            "shift": "*"
+          }
+        }
+      },
+      {
+        "keyCode": 57,
+        "chars": {
+          "ru": {
+            "normal": "9",
+            "uppercase": "9",
+            "shift": "("
+          },
+          "en": {
+            "normal": "9",
+            "uppercase": "9",
+            "shift": "("
+          }
+        }
+      },
+      {
+        "keyCode": 48,
+        "chars": {
+          "ru": {
+            "normal": "0",
+            "uppercase": "0",
+            "shift": ")"
+          },
+          "en": {
+            "normal": "0",
+            "uppercase": "0",
+            "shift": ")"
+          }
+        }
+      },
+      {
+        "keyCode": 189,
+        "chars": {
+          "ru": {
+            "normal": "-",
+            "uppercase": "-",
+            "shift": "_"
+          },
+          "en": {
+            "normal": "-",
+            "uppercase": "-",
+            "shift": "_"
+          }
+        }
+      },
+      {
+        "keyCode": 187,
+        "chars": {
+          "ru": {
+            "normal": "=",
+            "uppercase": "=",
+            "shift": "+"
+          },
+          "en": {
+            "normal": "=",
+            "uppercase": "=",
+            "shift": "+"
+          }
+        }
+      },
+      {
+        "keyCode": 220,
+        "chars": {
+          "ru": {
+            "normal": "\\",
+            "uppercase": "\\",
+            "shift": "/"
+          },
+          "en": {
+            "normal": "\\",
+            "uppercase": "\\",
+            "shift": "|"
+          }
+        }
+      },
+      {
+        "special": "backspace",
+        "keyCode": 8,
+        "chars": {
+          "ru": {
+            "normal": "⟵",
+            "uppercase": "⟵"
+          },
+          "en": {
+            "normal": "⟵",
+            "uppercase": "⟵"
+          }
+        }
+      }
+    ],
+    [
+      {
+        "special": "close",
+        "keyCode": "hide",
+        "chars": {
+          "ru": {
+            "normal": "↧",
+            "uppercase": "↧"
+          },
+          "en": {
+            "normal": "↧",
+            "uppercase": "↧"
+          }
+        }
+      },
+      {
+        "keyCode": 81,
+        "chars": {
+          "ru": {
+            "normal": "й",
+            "uppercase": "Й"
+          },
+          "en": {
+            "normal": "q",
+            "uppercase": "Q"
+          }
+        }
+      },
+      {
+        "keyCode": 87,
+        "chars": {
+          "ru": {
+            "normal": "ц",
+            "uppercase": "Ц"
+          },
+          "en": {
+            "normal": "w",
+            "uppercase": "W"
+          }
+        }
+      },
+      {
+        "keyCode": 69,
+        "chars": {
+          "ru": {
+            "normal": "у",
+            "uppercase": "У"
+          },
+          "en": {
+            "normal": "e",
+            "uppercase": "E"
+          }
+        }
+      },
+      {
+        "keyCode": 82,
+        "chars": {
+          "ru": {
+            "normal": "к",
+            "uppercase": "К"
+          },
+          "en": {
+            "normal": "r",
+            "uppercase": "R"
+          }
+        }
+      },
+      {
+        "keyCode": 84,
+        "chars": {
+          "ru": {
+            "normal": "е",
+            "uppercase": "Е"
+          },
+          "en": {
+            "normal": "t",
+            "uppercase": "T"
+          }
+        }
+      },
+      {
+        "keyCode": 89,
+        "chars": {
+          "ru": {
+            "normal": "н",
+            "uppercase": "Н"
+          },
+          "en": {
+            "normal": "y",
+            "uppercase": "Y"
+          }
+        }
+      },
+      {
+        "keyCode": 85,
+        "chars": {
+          "ru": {
+            "normal": "г",
+            "uppercase": "Г"
+          },
+          "en": {
+            "normal": "u",
+            "uppercase": "U"
+          }
+        }
+      },
+      {
+        "keyCode": 73,
+        "chars": {
+          "ru": {
+            "normal": "ш",
+            "uppercase": "Ш"
+          },
+          "en": {
+            "normal": "i",
+            "uppercase": "I"
+          }
+        }
+      },
+      {
+        "keyCode": 79,
+        "chars": {
+          "ru": {
+            "normal": "щ",
+            "uppercase": "Щ"
+          },
+          "en": {
+            "normal": "o",
+            "uppercase": "O"
+          }
+        }
+      },
+      {
+        "keyCode": 80,
+        "chars": {
+          "ru": {
+            "normal": "з",
+            "uppercase": "З"
+          },
+          "en": {
+            "normal": "p",
+            "uppercase": "P"
+          }
+        }
+      },
+      {
+        "keyCode": 219,
+        "chars": {
+          "ru": {
+            "normal": "х",
+            "uppercase": "Х"
+          },
+          "en": {
+            "normal": "[",
+            "uppercase": "{"
+          }
+        }
+      },
+      {
+        "keyCode": 221,
+        "chars": {
+          "ru": {
+            "normal": "ъ",
+            "uppercase": "Ъ"
+          },
+          "en": {
+            "normal": "]",
+            "uppercase": "}"
+          }
+        }
+      }
+    ],
+    [
+      {
+        "special": "capslock",
+        "keyCode": 20,
+        "chars": {
+          "ru": {
+            "normal": "Capslock",
+            "uppercase": "Capslock"
+          },
+          "en": {
+            "normal": "Capslock",
+            "uppercase": "Capslock"
+          }
+        }
+      },
+      {
+        "keyCode": 65,
+        "chars": {
+          "ru": {
+            "normal": "ф",
+            "uppercase": "Ф"
+          },
+          "en": {
+            "normal": "a",
+            "uppercase": "A"
+          }
+        }
+      },
+      {
+        "keyCode": 83,
+        "chars": {
+          "ru": {
+            "normal": "ы",
+            "uppercase": "Ы"
+          },
+          "en": {
+            "normal": "s",
+            "uppercase": "S"
+          }
+        }
+      },
+      {
+        "keyCode": 68,
+        "chars": {
+          "ru": {
+            "normal": "в",
+            "uppercase": "В"
+          },
+          "en": {
+            "normal": "d",
+            "uppercase": "D"
+          }
+        }
+      },
+      {
+        "keyCode": 70,
+        "chars": {
+          "ru": {
+            "normal": "а",
+            "uppercase": "А"
+          },
+          "en": {
+            "normal": "f",
+            "uppercase": "F"
+          }
+        }
+      },
+      {
+        "keyCode": 71,
+        "chars": {
+          "ru": {
+            "normal": "п",
+            "uppercase": "П"
+          },
+          "en": {
+            "normal": "g",
+            "uppercase": "G"
+          }
+        }
+      },
+      {
+        "keyCode": 72,
+        "chars": {
+          "ru": {
+            "normal": "р",
+            "uppercase": "Р"
+          },
+          "en": {
+            "normal": "h",
+            "uppercase": "H"
+          }
+        }
+      },
+      {
+        "keyCode": 74,
+        "chars": {
+          "ru": {
+            "normal": "о",
+            "uppercase": "О"
+          },
+          "en": {
+            "normal": "j",
+            "uppercase": "J"
+          }
+        }
+      },
+      {
+        "keyCode": 75,
+        "chars": {
+          "ru": {
+            "normal": "л",
+            "uppercase": "Л"
+          },
+          "en": {
+            "normal": "k",
+            "uppercase": "K"
+          }
+        }
+      },
+      {
+        "keyCode": 76,
+        "chars": {
+          "ru": {
+            "normal": "д",
+            "uppercase": "Д"
+          },
+          "en": {
+            "normal": "l",
+            "uppercase": "L"
+          }
+        }
+      },
+      {
+        "keyCode": 186,
+        "chars": {
+          "ru": {
+            "normal": "ж",
+            "uppercase": "Ж"
+          },
+          "en": {
+            "normal": ";",
+            "uppercase": ":"
+          }
+        }
+      },
+      {
+        "keyCode": 222,
+        "chars": {
+          "ru": {
+            "normal": "э",
+            "uppercase": "Э"
+          },
+          "en": {
+            "normal": "'",
+            "uppercase": "\""
+          }
+        }
+      },
+      {
+        "special": "enter",
+        "keyCode": 13,
+        "chars": {
+          "ru": {
+            "normal": "↵",
+            "uppercase": "↵"
+          },
+          "en": {
+            "normal": "↵",
+            "uppercase": "↵"
+          }
+        }
+      }
+    ],
+    [
+      {
+        "special": "shift",
+        "keyCode": 16,
+        "chars": {
+          "ru": {
+            "normal": "Shift",
+            "uppercase": "Shift"
+          },
+          "en": {
+            "normal": "Shift",
+            "uppercase": "Shift"
+          }
+        }
+      },
+      {
+        "keyCode": 90,
+        "chars": {
+          "ru": {
+            "normal": "я",
+            "uppercase": "Я"
+          },
+          "en": {
+            "normal": "z",
+            "uppercase": "Z"
+          }
+        }
+      },
+      {
+        "keyCode": 88,
+        "chars": {
+          "ru": {
+            "normal": "ч",
+            "uppercase": "Ч"
+          },
+          "en": {
+            "normal": "x",
+            "uppercase": "X"
+          }
+        }
+      },
+      {
+        "keyCode": 67,
+        "chars": {
+          "ru": {
+            "normal": "с",
+            "uppercase": "С"
+          },
+          "en": {
+            "normal": "c",
+            "uppercase": "C"
+          }
+        }
+      },
+      {
+        "keyCode": 86,
+        "chars": {
+          "ru": {
+            "normal": "м",
+            "uppercase": "М"
+          },
+          "en": {
+            "normal": "v",
+            "uppercase": "V"
+          }
+        }
+      },
+      {
+        "keyCode": 66,
+        "chars": {
+          "ru": {
+            "normal": "и",
+            "uppercase": "И"
+          },
+          "en": {
+            "normal": "b",
+            "uppercase": "B"
+          }
+        }
+      },
+      {
+        "keyCode": 78,
+        "chars": {
+          "ru": {
+            "normal": "т",
+            "uppercase": "Т"
+          },
+          "en": {
+            "normal": "n",
+            "uppercase": "N"
+          }
+        }
+      },
+      {
+        "keyCode": 77,
+        "chars": {
+          "ru": {
+            "normal": "ь",
+            "uppercase": "Ь"
+          },
+          "en": {
+            "normal": "m",
+            "uppercase": "M"
+          }
+        }
+      },
+      {
+        "keyCode": 188,
+        "chars": {
+          "ru": {
+            "normal": "б",
+            "uppercase": "Б"
+          },
+          "en": {
+            "normal": ",",
+            "uppercase": "<"
+          }
+        }
+      },
+      {
+        "keyCode": 190,
+        "chars": {
+          "ru": {
+            "normal": "ю",
+            "uppercase": "Ю"
+          },
+          "en": {
+            "normal": ".",
+            "uppercase": ">"
+          }
+        }
+      },
+      {
+        "keyCode": 191,
+        "chars": {
+          "ru": {
+            "normal": ".",
+            "uppercase": ","
+          },
+          "en": {
+            "normal": "/",
+            "uppercase": "?"
+          }
+        }
+      }
+    ],
+    [
+      {
+        "special": "changeLanguage",
+        "keyCode": "changeLanguage",
+        "chars": {
+          "ru": {
+            "normal": "RU",
+            "uppercase": "RU"
+          },
+          "en": {
+            "normal": "EN",
+            "uppercase": "EN"
+          }
+        }
+      },
+      {
+        "special": "alt",
+        "keyCode": 18,
+        "chars": {
+          "ru": {
+            "normal": "Alt",
+            "uppercase": "Alt"
+          },
+          "en": {
+            "normal": "Alt",
+            "uppercase": "Alt"
+          }
+        }
+      },
+      {
+        "special": "space",
+        "keyCode": 32,
+        "chars": {
+          "ru": {
+            "normal": "⊔",
+            "uppercase": "⊔"
+          },
+          "en": {
+            "normal": "⊔",
+            "uppercase": "⊔"
+          }
+        }
+      },
+      {
+        "special": "arrow-left",
+        "keyCode": 37,
+        "chars": {
+          "ru": {
+            "normal": "⟸",
+            "uppercase": "⟸"
+          },
+          "en": {
+            "normal": "⟸",
+            "uppercase": "⟸"
+          }
+        }
+      },
+      {
+        "special": "arrow-right",
+        "keyCode": 39,
+        "chars": {
+          "ru": {
+            "normal": "⟹",
+            "uppercase": "⟹"
+          },
+          "en": {
+            "normal": "⟹",
+            "uppercase": "⟹"
+          }
+        }
+      }
+    ]
+  ]
+}
