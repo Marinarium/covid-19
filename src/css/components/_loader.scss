@@ -1,0 +1,75 @@
+@keyframes flick {
+  0% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes progress-point {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+.loader {
+  position: fixed;
+  top: 100%;
+  width: 100%;
+  transition: all 1s ease-in-out;
+  padding: 2rem 0;
+  backdrop-filter: blur(2px) brightness(0.1);;
+  text-align: center;
+  z-index: 1000;
+
+  &.show {
+    transform: translateY(-100%);
+    box-shadow: 0 0 5px 0 $accent;
+  }
+
+  &__header {
+    font-weight: bold;
+    font-size: 2rem;
+    margin-bottom: .5rem;
+    animation: flick 1.5s 0s infinite;
+  }
+
+  &__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+
+    &-line {
+      position: relative;
+      border-radius: 1px;
+      height: 100%;
+      background-color: $accent;
+      transition: all .5s;
+      width: 1%;
+
+      &:after {
+        display: block;
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        box-shadow: 0 0 8px 4px $accent;
+        width: 2px;
+        animation: progress-point 1s 0s infinite;
+      }
+    }
+  }
+}
