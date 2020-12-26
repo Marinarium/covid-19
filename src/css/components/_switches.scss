@@ -1,9 +1,9 @@
 .switches {
   display: flex;
   justify-content: space-between;
-  padding: 20px 0;
-  margin-bottom: 20px;
-  max-width: 370px;
+  padding: 5px 0;
+  margin-bottom: 5px;
+  //max-width: 370px;
 }
 
 .switches__item {
@@ -68,9 +68,14 @@
     margin-bottom: 0;
   }
 
+  &.active {
+    background-color: $secondary;
+    text-shadow: 0px 0px 1px $main-bg;
+  }
+
   &:hover {
     background-color: $accent;
-    text-shadow:0px 0px 1px $main-bg;
+    text-shadow: 0px 0px 1px $main-bg;
   }
 }
 

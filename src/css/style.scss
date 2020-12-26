@@ -2,6 +2,7 @@
 @import "abstracts/variables";
 @import "base/typography";
 @import "base/structure";
+@import "base/mixins";
 
 @import "components/header";
 @import "components/resize-button";
@@ -13,5 +14,7 @@
 @import "components/search";
 @import "components/footer";
 @import "components/loader";
+
+@import "keyboard/main";
 
 @import "utilities/modifiers";

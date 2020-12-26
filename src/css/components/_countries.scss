@@ -3,15 +3,18 @@
   min-width: 260px;
   position: relative;
   background-color: $main-bg;
-}
 
-.country_full {
-  top: 0;
-  left: 0;
-  position: absolute;
-  z-index: 100000;
-  width: calc(100vw - 40px);
-  height: 100%;
+  .fullscreen__country & {
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+    z-index: 100000;
+    height: 100%;
+    width: 100%;
+    padding: 0 20px;
+  }
 }
 
 .country__header {
@@ -27,8 +30,14 @@
 
 .country__list {
   box-sizing: border-box;
-  max-height: 450px;
   overflow-y: scroll;
+  height: 1px;
+  min-height: calc(100% - 108px);
+
+  @include media-md {
+    height: auto;
+    max-height: 425px;
+  }
 }
 
 ::-webkit-scrollbar {
@@ -41,6 +50,10 @@
   padding: 10px;
   white-space: nowrap;
   cursor: pointer;
+
+  &:hover {
+    opacity: 0.85;
+  }
 }
 
 .country__cases {
@@ -51,8 +64,17 @@
   margin-bottom: 6px;
 }
 
-.country__name {
+.country__name-text {
   font-size: 14px;
+  font-weight: bold;
   display: inline-block;
+  text-overflow: ellipsis;
+  width: calc(100% - 25px);
+  overflow: hidden;
+}
+
+.country__name-flag {
+  width: 20px;
+  margin-right: 5px;
 }
 

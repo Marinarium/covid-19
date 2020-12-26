@@ -3,6 +3,7 @@ import '../css/style.scss';
 import HttpClient from './components/HttpClient';
 import Storage from './components/Storage';
 import View from './components/View';
+import Keyboard from './components/Keyboard';
 import Mixin from './mixin';
 
 class App {
@@ -14,6 +15,7 @@ class App {
           historical: 'https://disease.sh/v3/covid-19/historical/<PATH>?lastdays=all',
         },
         countries: 'https://restcountries.eu/rest/v2/all?fields=name;flag;population;alpha2Code;latlng',
+        geoJson: 'https://nominatim.openstreetmap.org/search.php?country=<ISO>&polygon_geojson=1&limit=1&polygon_threshold=0.01&format=geojson',
       },
       events: {
         loadAll: 'load-all',
@@ -22,17 +24,27 @@ class App {
         loadMap: 'load-map',
         loadProgress: 'country-data-loaded',
         worldDailyCalculated: 'world-daily-calculated',
-        selectCountry: 'select-country',
+        countryChanged: 'country-changed',
+        periodChanged: 'period-changed',
+        casesChanged: 'cases-changed',
         graphModeChange: 'graph-mode-change',
+        countryFilterChanged: 'country-filter-changed',
       },
       timeouts: {
         loaderHide: 1500,
-      }
+      },
+      mapIntensityColors: {
+        good: '#2dd720',
+        average: '#18e3bb',
+        medium: '#f1e616',
+        high: '#fa3e3e',
+      },
     });
 
     this.client = new HttpClient(this);
     this.storage = new Storage(this, this.client);
     this.view = new View(this, this.storage);
+    this.keyboard = new Keyboard(document.querySelector('.search__input'));
   }
 
   init() {
@@ -40,10 +52,6 @@ class App {
       alert('Пожалуйста, проверьте в последний день дедлайна кросс-чека, функционал не доделан исключительно из-за нехватки свободного времени');
       alert('Спасибо :)');
     }
-
-    // document.addEventListener(this.config.events.loadAll, () => console.log('loadWorld', this));
-    // document.addEventListener(this.config.events.loadCountries, () => console.log('loadCountries'));
-    // document.addEventListener(this.config.events.loadProgress, () => console.log('countryDataLoaded'));
 
     this.view.init();
     this.storage.load();

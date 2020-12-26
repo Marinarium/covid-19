@@ -32,10 +32,25 @@ export default class Storage {
           name: 'Total Recovered per 100k',
           cb: (country) => country.perOneHundredThousandTotal.recovered,
         },
-      ]
+      ],
+      periodModes: {
+        allTime: 'all-time',
+        lastDay: 'last-day',
+      },
+      casesModes: {
+        allCases: 'all-cases',
+        per100k: 'per-100k',
+      },
     });
     this.states = this.getStateProxy({
+      isDataLoad: {
+        countries: false,
+        world: false,
+      },
+      filterQuery: '',
       selectedCountry: 'world',
+      typePeriod: this.statesCollection.periodModes.allTime,
+      typeCases: this.statesCollection.casesModes.allCases,
       graphMode: 'Total Cases',
     });
 
@@ -112,6 +127,8 @@ export default class Storage {
         recovered: 0,
       },
     };
+
+    this.setDataLoadListeners();
   }
 
   load() {
@@ -130,7 +147,7 @@ export default class Storage {
         object[property] = value;
 
         const triggerGraphRender = () => {
-          const graphMode = self.statesCollection.graphModes.find((item) => item.name === value);
+          const graphMode = self.statesCollection.graphModes.find((item) => item.name === object.graphMode);
 
           setTimeout(() => {
             document.dispatchEvent(new CustomEvent(self.$app.config.events.graphModeChange, {detail: graphMode}));
@@ -143,6 +160,20 @@ export default class Storage {
 
         if (property === 'selectedCountry') {
           triggerGraphRender();
+
+          document.dispatchEvent(new Event(self.$app.config.events.countryChanged));
+        }
+
+        if (property === 'typePeriod') {
+          document.dispatchEvent(new Event(self.$app.config.events.periodChanged));
+        }
+
+        if (property === 'typeCases') {
+          document.dispatchEvent(new Event(self.$app.config.events.casesChanged));
+        }
+
+        if (property === 'filterQuery') {
+          document.dispatchEvent(new Event(self.$app.config.events.countryFilterChanged));
         }
 
         return true;
@@ -307,16 +338,20 @@ export default class Storage {
       const countryDailyIndex = countryData.daily.findIndex((item) => item.date === date);
       const countryDaily = countryData.daily[countryDailyIndex];
       const countryDailyPreviousIndex = countryDailyIndex - 1;
-      const countryDailyPrevious = countryData.daily[countryDailyPreviousIndex];
+      const countryDailyPrevious = countryData.daily[countryDailyPreviousIndex] || countryDaily;
       const apiData = reformatCollection[date];
 
-      countryDaily.total.cases = apiData.cases;
-      countryDaily.total.recovered = apiData.recovered;
-      countryDaily.total.deaths = apiData.deaths;
+      const totalMaxCases = Math.max(countryDailyPrevious.total.cases, apiData.cases);
+      const totalMaxRecovered = Math.max(countryDailyPrevious.total.recovered, apiData.recovered);
+      const totalMaxDeaths = Math.max(countryDailyPrevious.total.deaths, apiData.deaths);
 
-      countryDaily.perOneHundredThousandTotal.cases = this.calculateByOneThousand(apiData.cases, countryData.population);
-      countryDaily.perOneHundredThousandTotal.recovered = this.calculateByOneThousand(apiData.recovered, countryData.population);
-      countryDaily.perOneHundredThousandTotal.deaths = this.calculateByOneThousand(apiData.deaths, countryData.population);
+      countryDaily.total.cases = totalMaxCases;
+      countryDaily.total.recovered = totalMaxRecovered;
+      countryDaily.total.deaths = totalMaxDeaths;
+
+      countryDaily.perOneHundredThousandTotal.cases = this.calculateByOneThousand(totalMaxCases, countryData.population);
+      countryDaily.perOneHundredThousandTotal.recovered = this.calculateByOneThousand(totalMaxRecovered, countryData.population);
+      countryDaily.perOneHundredThousandTotal.deaths = this.calculateByOneThousand(totalMaxDeaths, countryData.population);
 
       if (countryDailyPreviousIndex > 0 && apiData.cases > countryDailyPrevious.total.cases) previousIndex = countryDailyPreviousIndex;
     });
@@ -468,5 +503,15 @@ export default class Storage {
     const reg = new RegExp(query, 'i');
 
     return this.collection.countries.filter((country) => (reg.test(country.name) || reg.test(country.iso)));
+  }
+
+  setDataLoadListeners() {
+    document.addEventListener(this.$app.config.events.loadAll, () => {
+      this.states.isDataLoad.world = true;
+    });
+
+    document.addEventListener(this.$app.config.events.loadCountries, () => {
+      this.states.isDataLoad.countries = true;
+    });
   }
 }

@@ -10,7 +10,7 @@ export default class HttpClient {
   }
 
   getDataAsync(url, params, cb, responseType) {
-    return  fetch(url, params)
+    return fetch(url, params)
       .then((response) => response[responseType]())
       .then((response) => cb(response));
   }

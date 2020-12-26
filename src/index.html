@@ -1,124 +1,128 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>COVID-19 Dashboard</title>
-    <link rel="icon" type="image/png" href="img/favicon.png">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Pacifico&display=swap"
-          rel="stylesheet">
-    <!--For Map-->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>
-    <link rel="stylesheet" href="https://cdn.maptiler.com/mapbox-gl-js/v0.53.0/mapbox-gl.css"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COVID-19 Dashboard</title>
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Pacifico&display=swap"
+        rel="stylesheet">
+  <!--For Map-->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://cdn.maptiler.com/mapbox-gl-js/v0.53.0/mapbox-gl.css"/>
 </head>
 <body class="body">
 <div class="content">
-    <header class="header">
-        <h1 class="main-title">COVID-19 Dashboard</h1>
-    </header>
-    <main class="main">
-        <div class="information">
-            <div class="statistic">
-                <div class="resize-button resize-button_statistic"></div>
-                <div class="information__header">
-                    <h2 class="information__main-title">Statistic</h2>
-                    <p class="information__subtitle">Last Updated: <span
-                            class="information__last-update">12/13/2020</span></p>
-                </div>
-                <ul class="information__list">
-                    <li class="information__item">
-                        <h2 class="information__title">Cases in</h2>
-                        <p class="information__numbers">the world</p>
-                    </li>
-                    <li class="information__item">
-                        <h2 class="information__title">All cases</h2>
-                        <p class="information__numbers">161 135 597</p>
-                    </li>
-                    <li class="information__item">
-                        <h2 class="information__title">Deaths</h2>
-                        <p class="information__numbers">1 609 413</p>
-                    </li>
-                    <li class="information__item">
-                        <h2 class="information__title">Recovered</h2>
-                        <p class="information__numbers">42 022 409</p>
-                    </li>
-                    <li class="information__item">
-                        <h2 class="information__title">Last updated</h2>
-                        <p class="information__numbers">12/13/2020</p>
-                    </li>
-                </ul>
-                <div class="switches">
-                    <div class="switches__item">
-                        <button class="switches__btn" type="button">all time</button>
-                        <ul class="switches__list">
-                            <li class="switches__option">all time</li>
-                            <li class="switches__option">the last day</li>
-                        </ul>
-                    </div>
-                    <div class="switches__item">
-                        <button class="switches__btn" type="button">all cases</button>
-                        <ul class="switches__list">
-                            <li class="switches__option">all cases</li>
-                            <li class="switches__option">daily cases</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="chart">
-                <div class="resize-button resize-button_chart"></div>
-                <h3 class="chart__title">Chart</h3>
-                <div class="chart__body">
-                    <canvas class="chart__body-box"></canvas>
-                    <div class="chart__body-mode">
-                        <div class="chart__body-mode-nav">
-                            <div class="chart__body-mode-nav-prev"><</div>
-                            <div class="chart__body-mode-nav-next">></div>
-                        </div>
-                        <div class="chart__body-mode-current">Total Cases</div>
-                    </div>
-                    <div class="chart__body-loader">
-                        <span class="chart__body-loader-title">Computing</span>
-                    </div>
-                </div>
-            </div>
+  <header class="header">
+    <h1 class="main-title">COVID-19 Dashboard</h1>
+  </header>
+  <main class="main">
+    <div class="information">
+      <div class="statistic">
+        <div class="resize-button resize-button_statistic"></div>
+        <div class="information__header">
+          <h2 class="information__main-title">Statistic</h2>
+          <p class="information__subtitle">Last Updated: <span
+            class="information__last-update">12/25/2020</span></p>
         </div>
-        <div class="map" id="map"></div>
-        <div class="country">
-            <div class="resize-button resize-button_country"></div>
-            <div class="country__header">
-                <h2 class="country__main-title">Countries</h2>
-                <form action="/" method="post" class="search">
-                    <input type="search" placeholder="Search..." class="search__input">
-                    <button class="search__button" type="submit">
-                        <svg class="search__icon" width="17" height="17" viewBox="0 0 17 17" fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                            <path class="icon_color"
-                                  d="M10.1104 1.02393C8.34747 -0.338884 6.45248 -0.0879788 4.8348 0.33856C3.60933 0.662095 2.53836 1.27219 1.7381 2.10414C0.326431 3.56995 -0.290267 5.70001 0.129668 7.65971C0.554887 9.64978 2.05636 11.3573 3.95399 12.0083C4.61823 12.2367 5.37226 12.3569 6.19893 12.3648C6.22138 12.3648 6.24383 12.3648 6.26496 12.3648C7.31084 12.3648 8.24051 12.1786 9.02756 11.8128C9.47522 11.6042 9.88592 11.319 10.2623 10.9835C12.0556 12.5233 13.7631 14.1832 15.3226 15.9501C15.4534 16.0967 15.6356 16.1733 15.8178 16.1733C15.9737 16.1733 16.1295 16.1192 16.2549 16.0082C16.5283 15.7666 16.5547 15.3493 16.313 15.0759C14.7178 13.2694 12.9707 11.5699 11.1352 9.99312C11.8918 8.92612 12.3606 7.58179 12.3884 6.16484C12.4293 4.11138 11.5564 2.14244 10.1104 1.02393ZM8.47028 10.6151C7.84566 10.9056 7.06125 11.0271 6.21082 11.043C5.52809 11.0364 4.91403 10.9413 4.38317 10.759C2.91472 10.2559 1.75131 8.93008 1.41985 7.38371C1.09631 5.86904 1.59416 4.15628 2.6889 3.01928C3.33069 2.3524 4.16528 1.88097 5.17022 1.61553C5.85295 1.43594 6.48549 1.31709 7.08106 1.31709C7.87075 1.31709 8.59838 1.52442 9.30091 2.06716C10.4234 2.93477 11.0995 4.49434 11.0678 6.13579C11.0295 8.11134 9.98628 9.90993 8.47028 10.6151Z"
-                                  fill="#a7a9be"></path>
-                        </svg>
-                    </button>
-                </form>
-            </div>
-            <ul class="country__list"></ul>
+        <ul class="information__list">
+          <li class="information__item">
+            <h2 class="information__title">Cases in</h2>
+            <p class="information__numbers information__numbers_location">...</p>
+          </li>
+          <li class="information__item">
+            <h2 class="information__title">All cases</h2>
+            <p class="information__numbers information__numbers_all">...</p>
+          </li>
+          <li class="information__item">
+            <h2 class="information__title">Deaths</h2>
+            <p class="information__numbers information__numbers_deaths">...</p>
+          </li>
+          <li class="information__item">
+            <h2 class="information__title">Recovered</h2>
+            <p class="information__numbers information__numbers_recovered">...</p>
+          </li>
+        </ul>
+        <div class="switches">
+          <div class="switches__item switches__item_time">
+            <button class="switches__btn switches__btn_time" type="button">all time</button>
+            <ul class="switches__list">
+              <li class="switches__option" data-param="all-time">all time</li>
+              <li class="switches__option" data-param="last-day">last day</li>
+            </ul>
+          </div>
+          <div class="switches__item switches__item_cases">
+            <button class="switches__btn switches__btn_cases" type="button">all cases</button>
+            <ul class="switches__list">
+              <li class="switches__option" data-param="all-cases">all cases</li>
+              <li class="switches__option" data-param="per-100k">per 100 000</li>
+            </ul>
+          </div>
         </div>
-    </main>
+      </div>
+      <div class="chart">
+        <div class="resize-button resize-button_chart"></div>
+        <h3 class="chart__title">Chart</h3>
+        <div class="chart__body">
+          <canvas class="chart__body-box"></canvas>
+          <div class="chart__body-mode">
+            <div class="chart__body-mode-nav">
+              <div class="chart__body-mode-nav-prev"><</div>
+              <div class="chart__body-mode-nav-next">></div>
+            </div>
+            <div class="chart__body-mode-current">Total Cases</div>
+          </div>
+          <div class="chart__body-loader">
+            <span class="chart__body-loader-title">Computing</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="map">
+      <div class="resize-button resize-button_map"></div>
+      <div class="map__block" id="map"></div>
+      <div class="map__legend">
+        <div class="map__legend-title">Legend:</div>
+        <div class="map__legend-subtitle">percent of max</div>
+        <div class="map__legend-list">
+          <div class="map__legend-list-item good">0% - 25%</div>
+          <div class="map__legend-list-item average">25% - 50%</div>
+          <div class="map__legend-list-item medium">50% - 75%</div>
+          <div class="map__legend-list-item high">75% - 100%</div>
+        </div>
+      </div>
+    </div>
+    <div class="country">
+      <div class="resize-button resize-button_country"></div>
+      <div class="country__header">
+        <h2 class="country__main-title">Countries</h2>
+        <form action="/" method="post" class="search">
+          <input type="search" placeholder="Search..." class="search__input">
+          <button class="search__button" type="reset">
+            <img src="./img/close.svg" alt="reset">
+          </button>
+        </form>
+      </div>
+      <ul class="country__list"></ul>
+    </div>
+  </main>
 </div>
 <footer class="footer">
-    <a href="https://rs.school/" class="course">
-        <img src="img/rs-logo.svg" alt="RS school" class="course__logo">
+  <div class="authors">
+    <a href="https://github.com/Marinarium" class="authors_link">
+      <img src="img/git-logo.svg" alt="github" class="authors__logo">
+      <span class="authors_name">marinarium</span>
     </a>
-    <div class="authors">
-        <a href="https://github.com/Marinarium" class="authors_link">
-            <img src="img/git-logo.svg" alt="github" class="authors__logo">
-            <span class="authors_name">marinarium</span>
-        </a>
-        <a href="https://github.com/art-sh" class="authors_link">
-            <img src="img/git-logo.svg" alt="github" class="authors__logo">
-            <span class="authors_name">art-sh</span>
-        </a>
-    </div>
-    <div class="year">2020</div>
+    <a href="https://rs.school/" class="course">
+      <img src="img/rs-logo.svg" alt="RS school" class="course__logo">
+    </a>
+    <a href="https://github.com/art-sh" class="authors_link">
+      <img src="img/git-logo.svg" alt="github" class="authors__logo">
+      <span class="authors_name">art-sh</span>
+    </a>
+  </div>
+  <div class="year">2020</div>
 </footer>
 <div class="loader show">
   <div class="loader__header">Loading...</div>
