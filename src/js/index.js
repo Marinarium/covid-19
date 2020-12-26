@@ -22,7 +22,9 @@ class App {
         loadMap: 'load-map',
         loadProgress: 'country-data-loaded',
         worldDailyCalculated: 'world-daily-calculated',
-        selectCountry: 'select-country',
+        countryChanged: 'country-changed',
+        periodChanged: 'period-changed',
+        casesChanged: 'cases-changed',
         graphModeChange: 'graph-mode-change',
       },
       timeouts: {

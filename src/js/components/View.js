@@ -34,78 +34,70 @@ export default class View {
   }
 
   init() {
-    this.loaderShow();
+    this.addLoaderListeners();
     this.renderMap();
     this.renderChart();
-    this.addListenersOnFullScreen();
-    this.toggleSwitch();
+
+    this.addFullScreenListeners();
+    this.addSwitchListenters();
+    this.addCountriesListListeners();
 
     document.addEventListener(this.$app.config.events.loadCountries, () => {
-      this.loaderHide.bind(this);
       this.renderTable();
-      this.renderStatistics('global-all-cases');
-      this.toggleCountries();
     });
+
+    document.addEventListener(this.$app.config.events.loadAll, () => {
+      this.renderStatistics();
+    });
+
+    document.addEventListener(this.$app.config.events.countryChanged, this.renderStatistics.bind(this));
+    document.addEventListener(this.$app.config.events.periodChanged, this.renderStatistics.bind(this));
+    document.addEventListener(this.$app.config.events.casesChanged, this.renderStatistics.bind(this));
   }
 
-  renderStatistics(mode, country) {
-    if (mode === 'global-all-cases') {
-      this.elements.locationCasesIn.innerText = 'The World';
-      this.elements.allCases.innerText = this.$storage.getWorld().total.cases.toLocaleString();
-      this.elements.deaths.innerText = this.$storage.getWorld().total.deaths.toLocaleString();
-      this.elements.recovered.innerText = this.$storage.getWorld().total.recovered.toLocaleString();
+  renderStatistics() {
+    const country = this.$storage.states.selectedCountry;
+    const period = this.$storage.states.typePeriod;
+    const cases = this.$storage.states.typeCases;
+    const {periodModes} = this.$storage.statesCollection;
+    const {casesModes} = this.$storage.statesCollection;
+
+    const areaData = (country === 'world')
+      ? this.$storage.getWorld()
+      : this.$storage.getCountryDataByCode(country);
+    const locationTitle = (country === 'world') ? 'The World' : areaData.name;
+    const mode = `${period}-${cases}`;
+
+    this.elements.locationCasesIn.innerText = locationTitle;
+
+    if (mode === `${periodModes.allTime}-${casesModes.allCases}`) {
+      this.elements.allCases.innerText = areaData.total.cases;
+      this.elements.deaths.innerText = areaData.total.deaths;
+      this.elements.recovered.innerText = areaData.total.recovered;
     }
-    if (mode === 'global-last-cases') {
-      this.elements.locationCasesIn.innerText = 'The World';
-      this.elements.allCases.innerText = this.$storage.getWorld().lastDay.cases.toLocaleString();
-      this.elements.deaths.innerText = this.$storage.getWorld().lastDay.deaths.toLocaleString();
-      this.elements.recovered.innerText = this.$storage.getWorld().lastDay.recovered.toLocaleString();
+
+    if (mode === `${periodModes.lastDay}-${casesModes.allCases}`) {
+      this.elements.allCases.innerText = areaData.lastDay.cases;
+      this.elements.deaths.innerText = areaData.lastDay.deaths;
+      this.elements.recovered.innerText = areaData.lastDay.recovered;
     }
-    if (mode === 'global-all-per') {
-      this.elements.locationCasesIn.innerText = 'The World';
-      this.elements.allCases.innerText = this.$storage.getWorld().perOneHundredThousandTotal.cases;
-      this.elements.deaths.innerText = this.$storage.getWorld().perOneHundredThousandTotal.deaths;
-      this.elements.recovered.innerText = this.$storage.getWorld().perOneHundredThousandTotal.recovered;
+
+    if (mode === `${periodModes.allTime}-${casesModes.per100k}`) {
+      this.elements.allCases.innerText = areaData.perOneHundredThousandTotal.cases;
+      this.elements.deaths.innerText = areaData.perOneHundredThousandTotal.deaths;
+      this.elements.recovered.innerText = areaData.perOneHundredThousandTotal.recovered;
     }
-    if (mode === 'global-last-per') {
-      this.elements.locationCasesIn.innerText = 'The World';
-      this.elements.allCases.innerText = this.$storage.getWorld().perOneHundredThousandLastDay.cases;
-      this.elements.deaths.innerText = this.$storage.getWorld().perOneHundredThousandLastDay.deaths;
-      this.elements.recovered.innerText = this.$storage.getWorld().perOneHundredThousandLastDay.recovered;
-    }
-    if (mode === 'country-all-cases') {
-      this.elements.locationCasesIn.innerText = country;
-      const choosenCountry = this.$storage.getAllCountries().find(item => item.name === country);
-      this.elements.allCases.innerText = choosenCountry.total.cases.toLocaleString();
-      this.elements.deaths.innerText = choosenCountry.total.deaths.toLocaleString();
-      this.elements.recovered.innerText = choosenCountry.total.recovered.toLocaleString();
-    }
-    if (mode === 'country-last-cases') {
-      this.elements.locationCasesIn.innerText = country;
-      const choosenCountry = this.$storage.getAllCountries().find(item => item.name === country);
-      this.elements.allCases.innerText = choosenCountry.lastDay.cases.toLocaleString();
-      this.elements.deaths.innerText = choosenCountry.lastDay.deaths.toLocaleString();
-      this.elements.recovered.innerText = choosenCountry.lastDay.recovered.toLocaleString();
-    }
-    if (mode === 'country-all-per') {
-      this.elements.locationCasesIn.innerText = country;
-      const choosenCountry = this.$storage.getAllCountries().find(item => item.name === country);
-      this.elements.allCases.innerText = choosenCountry.perOneHundredThousandTotal.cases;
-      this.elements.deaths.innerText = choosenCountry.perOneHundredThousandTotal.deaths;
-      this.elements.recovered.innerText = choosenCountry.perOneHundredThousandTotal.recovered;
-    }
-    if (mode === 'country-last-per') {
-      this.elements.locationCasesIn.innerText = country;
-      const choosenCountry = this.$storage.getAllCountries().find(item => item.name === country);
-      this.elements.allCases.innerText = choosenCountry.perOneHundredThousandLastDay.cases;
-      this.elements.deaths.innerText = choosenCountry.perOneHundredThousandLastDay.deaths;
-      this.elements.recovered.innerText = choosenCountry.perOneHundredThousandLastDay.recovered;
+
+    if (mode === `${periodModes.lastDay}-${casesModes.per100k}`) {
+      this.elements.allCases.innerText = areaData.perOneHundredThousandLastDay.cases;
+      this.elements.deaths.innerText = areaData.perOneHundredThousandLastDay.deaths;
+      this.elements.recovered.innerText = areaData.perOneHundredThousandLastDay.recovered;
     }
   }
 
   renderTable() {
-    console.log(this.$storage.getAllCountries());
     const arrayOfNumbersAndNamesInCountry = [];
+
     for (let i = 0; i < this.$storage.getAllCountries().length; i += 1) {
       arrayOfNumbersAndNamesInCountry.push({
         name: this.$storage.getAllCountries()[i].name,
@@ -147,7 +139,7 @@ export default class View {
     map.addMap();
   }
 
-  loaderShow() {
+  addLoaderListeners() {
     document.addEventListener(this.$app.config.events.loadProgress, (e) => {
       requestAnimationFrame(() => {
         this.elements.loaderMainProgress.style.width = `${(e.detail.current / e.detail.overall) * 100}%`;
@@ -160,10 +152,7 @@ export default class View {
     })
   }
 
-  loaderHide() {
-  }
-
-  addListenersOnFullScreen() {
+  addFullScreenListeners() {
     this.elements.mainContent.addEventListener('click', (event) => {
       if (event.target === this.elements.statisticResizeButton) {
         this.elements.statisticBlock.classList.toggle('statistic_full');
@@ -180,97 +169,43 @@ export default class View {
     });
   }
 
-  toggleSwitch() {
+  addSwitchListenters() {
+    const loadStates = this.$storage.states.isDataLoad;
+    const {periodModes} = this.$storage.statesCollection;
+    const {casesModes} = this.$storage.statesCollection;
+
     this.elements.timeSwitcher.addEventListener('click', (event) => {
-      if (event.target.getAttribute('data-param') === 'all-time') {
+      if (!loadStates.world || !loadStates.countries) return;
+
+      if (event.target.getAttribute('data-param') === periodModes.allTime) {
         this.elements.timeButton.innerText = 'all time';
-        if (this.elements.casesButton.innerText === 'all cases' && this.elements.locationCasesIn.innerText === 'The World') {
-          this.renderStatistics('global-all-cases');
-        }
-        if (this.elements.casesButton.innerText === 'per 100 000' && this.elements.locationCasesIn.innerText === 'The World') {
-          this.renderStatistics('global-all-per');
-        }
-        if (this.elements.casesButton.innerText === 'all cases' && this.elements.locationCasesIn.innerText !== 'The World') {
-          this.renderStatistics('country-all-cases', this.elements.locationCasesIn.innerText);
-        }
-        if (this.elements.casesButton.innerText === 'per 100 000' && this.elements.locationCasesIn.innerText !== 'The World') {
-          this.renderStatistics('country-all-per', this.elements.locationCasesIn.innerText);
-        }
+        this.$storage.states.typePeriod = periodModes.allTime;
       }
-      if (event.target.getAttribute('data-param') === 'last-day') {
+
+      if (event.target.getAttribute('data-param') === periodModes.lastDay) {
         this.elements.timeButton.innerText = 'last day';
-        if (this.elements.casesButton.innerText === 'all cases' && this.elements.locationCasesIn.innerText === 'The World') {
-          this.renderStatistics('global-last-cases');
-        }
-        if (this.elements.casesButton.innerText === 'per 100 000' && this.elements.locationCasesIn.innerText === 'The World') {
-          this.renderStatistics('global-last-per');
-        }
-        if (this.elements.casesButton.innerText === 'all cases' && this.elements.locationCasesIn.innerText !== 'The World') {
-          this.renderStatistics('country-last-cases', this.elements.locationCasesIn.innerText);
-        }
-        if (this.elements.casesButton.innerText === 'per 100 000' && this.elements.locationCasesIn.innerText !== 'The World') {
-          this.renderStatistics('country-last-per', this.elements.locationCasesIn.innerText);
-        }
+        this.$storage.states.typePeriod = periodModes.lastDay;
       }
     });
+
     this.elements.casesSwitcher.addEventListener('click', (event) => {
-      if (event.target.getAttribute('data-param') === 'all-cases') {
+      if (!loadStates.world || !loadStates.countries) return;
+
+      if (event.target.getAttribute('data-param') === casesModes.allCases) {
         this.elements.casesButton.innerText = 'all cases';
-        if (this.elements.timeButton.innerText === 'all time' && this.elements.locationCasesIn.innerText === 'The World') {
-          this.renderStatistics('global-all-cases');
-        }
-        if (this.elements.timeButton.innerText === 'last day' && this.elements.locationCasesIn.innerText === 'The World') {
-          this.renderStatistics('global-last-cases');
-        }
-        if (this.elements.timeButton.innerText === 'all time' && this.elements.locationCasesIn.innerText !== 'The World') {
-          this.renderStatistics('country-all-cases', this.elements.locationCasesIn.innerText);
-        }
-        if (this.elements.timeButton.innerText === 'last day' && this.elements.locationCasesIn.innerText !== 'The World') {
-          this.renderStatistics('country-last-cases', this.elements.locationCasesIn.innerText);
-        }
+        this.$storage.states.typeCases = casesModes.allCases;
       }
-      if (event.target.getAttribute('data-param') === 'per-cases') {
-        this.elements.casesButton.innerText = 'per 100 000';
-        if (this.elements.timeButton.innerText === 'all time' && this.elements.locationCasesIn.innerText === 'The World') {
-          this.renderStatistics('global-all-per');
-        }
-        if (this.elements.timeButton.innerText === 'last day' && this.elements.locationCasesIn.innerText === 'The World') {
-          this.renderStatistics('global-last-per');
-        }
-        if (this.elements.timeButton.innerText === 'all time' && this.elements.locationCasesIn.innerText !== 'The World') {
-          this.renderStatistics('country-all-per', this.elements.locationCasesIn.innerText);
-        }
-        if (this.elements.timeButton.innerText === 'last day' && this.elements.locationCasesIn.innerText !== 'The World') {
-          this.renderStatistics('country-last-per', this.elements.locationCasesIn.innerText);
-        }
+
+      if (event.target.getAttribute('data-param') === casesModes.per100k) {
+        this.elements.casesButton.innerText = 'per 100k';
+        this.$storage.states.typeCases = casesModes.per100k;
       }
     });
   }
 
-  toggleCountries() {
-    const countryItems = document.querySelectorAll('.country__item');
+  addCountriesListListeners() {
     this.elements.countryList.addEventListener('click', (event) => {
-
-      const getCountry = (countryItem) => {
-        if (countryItem.contains(event.target)) {
-          if (this.elements.timeButton.innerText === 'all time' && this.elements.casesButton.innerText === 'all cases') {
-            this.renderStatistics('country-all-cases', countryItem.getAttribute('data-country'));
-          }
-          if (this.elements.timeButton.innerText === 'last day' && this.elements.casesButton.innerText === 'all cases') {
-            this.renderStatistics('country-last-cases', countryItem.getAttribute('data-country'));
-          }
-          if (this.elements.timeButton.innerText === 'all time' && this.elements.casesButton.innerText === 'per 100 000') {
-            this.renderStatistics('country-all-per', countryItem.getAttribute('data-country'));
-          }
-          if (this.elements.timeButton.innerText === 'last day' && this.elements.casesButton.innerText === 'per 100 000') {
-            this.renderStatistics('country-last-per', countryItem.getAttribute('data-country'));
-          }
-        }
-      };
-
-      for (let i = 0; i < countryItems.length; i += 1) {
-        getCountry(countryItems[i]);
-      }
+      this.$storage.states.selectedCountry = event.target.closest('[data-iso]').dataset.iso;
     });
   }
 }
