@@ -12,6 +12,7 @@ export default class View {
       statisticBlock: document.querySelector('.statistic'),
       statisticResizeButton: document.querySelector('.resize-button_statistic'),
       chart: this.chart.elements,
+      mapResizeButton: document.querySelector('.resize-button_map'),
       countryBlock: document.querySelector('.country'),
       countryResizeButton: document.querySelector('.resize-button_country'),
       countryList: document.querySelector('.country__list'),
@@ -196,6 +197,11 @@ export default class View {
       if (event.target === this.elements.countryResizeButton) {
         document.body.classList.toggle('fullscreen__country');
         this.elements.countryResizeButton.classList.toggle('resize-button_minimize');
+      }
+      if (event.target === this.elements.mapResizeButton) {
+        document.body.classList.toggle('fullscreen__map');
+        this.elements.mapResizeButton.classList.toggle('resize-button_minimize');
+        window.dispatchEvent(new Event('resize'));
       }
     });
   }

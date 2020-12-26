@@ -12,6 +12,7 @@
   right: 0;
   opacity: 0;
   transition: opacity .25s, transform .25s;
+  z-index: 500;
 }
 
 .resize-button:hover {
@@ -20,7 +21,8 @@
 
 .statistic:hover .resize-button,
 .chart:hover:not(.loading) .resize-button,
-.country:hover .resize-button {
+.country:hover .resize-button,
+.map:hover .resize-button {
   opacity: 1;
 }
 
@@ -39,13 +41,32 @@
 
   .fullscreen__country &,
   .fullscreen__statistics &,
-  .fullscreen__chart & {
+  .fullscreen__chart &,
+  .fullscreen__map & {
     right: 20px;
   }
 }
 
-.fullscreen__country, .fullscreen__statistics, .fullscreen__chart  {
+.fullscreen__country, .fullscreen__statistics, .fullscreen__chart, .fullscreen__map {
   @include media-md {
     overflow: hidden;
+  }
+}
+
+.fullscreen__country {
+  .information, .map {
+    display: none;
+  }
+}
+
+.fullscreen__statistics, .fullscreen__chart {
+  .map, .country {
+    display: none;
+  }
+}
+
+.fullscreen__map {
+  .country, .information {
+    display: none;
   }
 }

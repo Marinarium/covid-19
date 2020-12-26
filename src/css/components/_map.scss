@@ -5,4 +5,25 @@
   //background-repeat: no-repeat;
   //background-size: cover;
   //background-position: center;
+  position: relative;
+
+  .fullscreen__map & {
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    position: absolute;
+    z-index: 100000;
+    height: 100%;
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  &__block {
+    height: 100%;
+
+    @include media-md {
+      height: 500px;
+    }
+  }
 }
