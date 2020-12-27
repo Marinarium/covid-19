@@ -32,6 +32,7 @@ export default class View {
       casesSwitcher: document.querySelector('.switches__item_cases'),
       casesButton: document.querySelector('.switches__btn_cases'),
       countryFilterInput: document.querySelector('.search__input'),
+      countryFilterButton: document.querySelector('.search__button'),
     };
   }
 
@@ -255,10 +256,9 @@ export default class View {
 
     this.elements.countryFilterInput.addEventListener('keydown', handler);
 
-    document.forms[0].addEventListener('reset', () => {
-      setTimeout(() => {
-        this.$storage.states.filterQuery = '';
-      });
+    this.elements.countryFilterButton.addEventListener('click', () => {
+      this.elements.countryFilterInput.value = '';
+      this.elements.countryFilterInput.dispatchEvent(new Event('keydown'));
     });
   }
 }
