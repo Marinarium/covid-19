@@ -179,6 +179,12 @@ export default class Keyboard {
           return;
         }
 
+        if (event.which === 13) {
+          this.keyboardHide();
+
+          return;
+        }
+
         if (event.ctrlKey)
           return;
 
@@ -255,7 +261,9 @@ export default class Keyboard {
       } else if (buttonConfig.special === 'backspace') {
         this.input.removeChar();
       } else if (buttonConfig.special === 'enter') {
-        //
+        this.keyboardHide();
+
+        return;
       } else if (buttonConfig.special === 'close') {
         this.keyboardHide();
       } else if (buttonConfig.special === 'arrow-left') {

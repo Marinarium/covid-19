@@ -259,6 +259,7 @@ export default class View {
     this.elements.countryFilterButton.addEventListener('click', () => {
       this.elements.countryFilterInput.value = '';
       this.elements.countryFilterInput.dispatchEvent(new Event('keydown'));
+      this.$app.keyboard.keyboardHide();
     });
   }
 }
