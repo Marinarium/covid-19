@@ -48,11 +48,6 @@ class App {
   }
 
   init() {
-    if (window.location.hostname !== 'localhost') {
-      alert('Пожалуйста, проверьте в последний день дедлайна кросс-чека, функционал не доделан исключительно из-за нехватки свободного времени');
-      alert('Спасибо :)');
-    }
-
     this.view.init();
     this.storage.load();
   }
