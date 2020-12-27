@@ -21,6 +21,18 @@ export default class Storage {
           cb: (country) => country.total.recovered,
         },
         {
+          name: 'Cases per day',
+          cb: (country) => country.lastDay.cases,
+        },
+        {
+          name: 'Death per day',
+          cb: (country) => country.lastDay.deaths,
+        },
+        {
+          name: 'Recovered per day',
+          cb: (country) => country.lastDay.recovered,
+        },
+        {
           name: 'Total Cases per 100k',
           cb: (country) => country.perOneHundredThousandTotal.cases,
         },
@@ -31,6 +43,18 @@ export default class Storage {
         {
           name: 'Total Recovered per 100k',
           cb: (country) => country.perOneHundredThousandTotal.recovered,
+        },
+        {
+          name: 'Cases per day per 100k',
+          cb: (country) => country.perOneHundredThousandLastDay.cases,
+        },
+        {
+          name: 'Death per day per 100k',
+          cb: (country) => country.perOneHundredThousandLastDay.deaths,
+        },
+        {
+          name: 'Recovered per day per 100k',
+          cb: (country) => country.perOneHundredThousandLastDay.recovered,
         },
       ],
       periodModes: {
@@ -122,6 +146,16 @@ export default class Storage {
         recovered: 0,
       },
       perOneHundredThousandTotal: {
+        cases: 0,
+        deaths: 0,
+        recovered: 0,
+      },
+      lastDay: {
+        cases: 0,
+        deaths: 0,
+        recovered: 0,
+      },
+      perOneHundredThousandLastDay: {
         cases: 0,
         deaths: 0,
         recovered: 0,
@@ -345,6 +379,10 @@ export default class Storage {
       const totalMaxRecovered = Math.max(countryDailyPrevious.total.recovered, apiData.recovered);
       const totalMaxDeaths = Math.max(countryDailyPrevious.total.deaths, apiData.deaths);
 
+      const totalMaxPreviousCases = totalMaxCases - countryDailyPrevious.total.cases;
+      const totalMaxPreviousRecovered = totalMaxRecovered - countryDailyPrevious.total.recovered;
+      const totalMaxPreviousDeaths = totalMaxDeaths - countryDailyPrevious.total.deaths;
+
       countryDaily.total.cases = totalMaxCases;
       countryDaily.total.recovered = totalMaxRecovered;
       countryDaily.total.deaths = totalMaxDeaths;
@@ -352,6 +390,14 @@ export default class Storage {
       countryDaily.perOneHundredThousandTotal.cases = this.calculateByOneThousand(totalMaxCases, countryData.population);
       countryDaily.perOneHundredThousandTotal.recovered = this.calculateByOneThousand(totalMaxRecovered, countryData.population);
       countryDaily.perOneHundredThousandTotal.deaths = this.calculateByOneThousand(totalMaxDeaths, countryData.population);
+
+      countryDaily.lastDay.cases = totalMaxPreviousCases;
+      countryDaily.lastDay.recovered = totalMaxPreviousRecovered;
+      countryDaily.lastDay.deaths = totalMaxPreviousDeaths;
+
+      countryDaily.perOneHundredThousandLastDay.cases = this.calculateByOneThousand(totalMaxPreviousCases, countryData.population);
+      countryDaily.perOneHundredThousandLastDay.recovered = this.calculateByOneThousand(totalMaxPreviousRecovered, countryData.population);
+      countryDaily.perOneHundredThousandLastDay.deaths = this.calculateByOneThousand(totalMaxPreviousDeaths, countryData.population);
 
       if (countryDailyPreviousIndex > 0 && apiData.cases > countryDailyPrevious.total.cases) previousIndex = countryDailyPreviousIndex;
     });
@@ -408,16 +454,28 @@ export default class Storage {
         const worldDailyIndex = worldData.daily.findIndex((item) => item.date === date);
         const worldDaily = worldData.daily[worldDailyIndex];
         const worldDailyPreviousIndex = worldDailyIndex - 1;
-        const worldDailyPrevious = worldData.daily[worldDailyPreviousIndex];
+        const worldDailyPrevious = worldData.daily[worldDailyPreviousIndex] || worldDaily;
         const apiData = reformatCollection[date];
 
         worldDaily.total.cases = apiData.cases;
         worldDaily.total.recovered = apiData.recovered;
         worldDaily.total.deaths = apiData.deaths;
 
+        worldDaily.lastDay.cases = apiData.cases - worldDailyPrevious.total.cases;
+        worldDaily.lastDay.recovered = apiData.recovered - worldDailyPrevious.total.recovered;
+        worldDaily.lastDay.deaths = apiData.deaths - worldDailyPrevious.total.deaths;
+
+        if (worldDaily.lastDay.cases < 0) worldDaily.lastDay.cases = 0;
+        if (worldDaily.lastDay.recovered < 0) worldDaily.lastDay.recovered = 0;
+        if (worldDaily.lastDay.deaths < 0) worldDaily.lastDay.deaths = 0;
+
         worldDaily.perOneHundredThousandTotal.cases = this.calculateByOneThousand(apiData.cases, worldData.population);
         worldDaily.perOneHundredThousandTotal.recovered = this.calculateByOneThousand(apiData.recovered, worldData.population);
         worldDaily.perOneHundredThousandTotal.deaths = this.calculateByOneThousand(apiData.deaths, worldData.population);
+
+        worldDaily.perOneHundredThousandLastDay.cases = this.calculateByOneThousand(worldDaily.lastDay.cases, worldData.population);
+        worldDaily.perOneHundredThousandLastDay.recovered = this.calculateByOneThousand(worldDaily.lastDay.recovered, worldData.population);
+        worldDaily.perOneHundredThousandLastDay.deaths = this.calculateByOneThousand(worldDaily.lastDay.deaths, worldData.population);
 
         if (worldDailyPreviousIndex > 0 && apiData.cases > worldDailyPrevious.total.cases) previousIndex = worldDailyPreviousIndex;
       });
